@@ -1,0 +1,51 @@
+﻿# IDE
+.DS_Store
+Thumbs.db
+*.code-workspace
+.vscode/
+.idea/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# .NET
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+
+# ReSharper / Rider
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Отладочные/кэш-файлы
+*.pdb
+*.mdb
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+build
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.ntvs*
+*.njsproj
+*.sw?
