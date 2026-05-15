@@ -32,27 +32,37 @@ namespace Crm.Migrations
 
                     b.Property<int>("X")
 <<<<<<< HEAD
+<<<<<<< HEAD
                         .HasMaxLength(200)
 =======
 >>>>>>> 3e3e200 (Drag & drop WIP.)
+=======
+>>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
                         .HasColumnType("integer")
                         .HasColumnName("x_coordinate");
 
                     b.Property<int>("Y")
 <<<<<<< HEAD
+<<<<<<< HEAD
                         .HasMaxLength(200)
 =======
 >>>>>>> 3e3e200 (Drag & drop WIP.)
+=======
+>>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
                         .HasColumnType("integer")
                         .HasColumnName("y_coordinate");
 
                     b.HasKey("Id");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     b.ToTable("users", (string)null);
 =======
                     b.ToTable("crm_elements", (string)null);
 >>>>>>> 3e3e200 (Drag & drop WIP.)
+=======
+                    b.ToTable("crm_elements", (string)null);
+>>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
                 });
 #pragma warning restore 612, 618
         }

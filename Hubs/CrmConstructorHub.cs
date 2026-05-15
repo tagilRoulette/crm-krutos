@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 public class CrmConstructorHub : Hub
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     private readonly AppDbContext _context;
     public CrmConstructorHub(AppDbContext context)
     {
@@ -29,6 +30,8 @@ public class CrmConstructorHub : Hub
         await Clients.Others.SendAsync("ReceiveNewPosition", objectId, x, y);
     }
 =======
+=======
+>>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
     private readonly LayoutStateManager _stateManager;
     private readonly IDbContextFactory<AppDbContext> _dbFactory;
 
@@ -73,5 +76,8 @@ public class CrmConstructorHub : Hub
             await context.SaveChangesAsync();
         }
     }
+<<<<<<< HEAD
 >>>>>>> 3e3e200 (Drag & drop WIP.)
+=======
+>>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
 }
