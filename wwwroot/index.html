@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>������������� CRM</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    <style>
+        #canvas {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            border: 1px solid #888;
+        }
+
+        #rect {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            background: #4caf50;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>������������� CRM</h2>
+    <div id="canvas">
+        <div id="rect">obj1</div>
+    </div>
+    <br>
+    <label>X: <input id="x" type="number" value="0"></label>
+    <label>Y: <input id="y" type="number" value="0"></label>
+    <button onclick="moveRect()">�����������</button>
+    <script>const objectId = "obj1";
+        const rect = document.getElementById("rect");
+
+        function updateRect(x, y) {
+            rect.style.left = x + "px";
+            rect.style.top = y + "px";
+            document.getElementById("x").value = x;
+            document.getElementById("y").value = y;
+        }
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/crmconstructorhub")
+            .build();
+
+        connection.on("ReceiveNewPosition", function(id, x, y) {
+            if (id === objectId) updateRect(x, y);
+        });
+
+        connection.start().then(() => {
+            // ����� ��������� ��������� ���������� ����� ��������� �����, ���� ���������� �� �������
+        });
+
+        function moveRect() {
+            const x = parseInt(document.getElementById("x").value, 10);
+            const y = parseInt(document.getElementById("y").value, 10);
+            connection.invoke("MoveObject", objectId, x, y);
+        }
+
+        // ��������� �������
+        updateRect(0, 0);</script>
+</body>
+</html>

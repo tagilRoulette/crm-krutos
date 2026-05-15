@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,9 +11,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Crm.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260511073602_FixTypesAndTable")]
+    partial class FixTypesAndTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,28 +34,16 @@ namespace Crm.Migrations
                         .HasColumnName("last_modified");
 
                     b.Property<int>("X")
-<<<<<<< HEAD
-                        .HasMaxLength(200)
-=======
->>>>>>> 3e3e200 (Drag & drop WIP.)
                         .HasColumnType("integer")
                         .HasColumnName("x_coordinate");
 
                     b.Property<int>("Y")
-<<<<<<< HEAD
-                        .HasMaxLength(200)
-=======
->>>>>>> 3e3e200 (Drag & drop WIP.)
                         .HasColumnType("integer")
                         .HasColumnName("y_coordinate");
 
                     b.HasKey("Id");
 
-<<<<<<< HEAD
-                    b.ToTable("users", (string)null);
-=======
                     b.ToTable("crm_elements", (string)null);
->>>>>>> 3e3e200 (Drag & drop WIP.)
                 });
 #pragma warning restore 612, 618
         }
