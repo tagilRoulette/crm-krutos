@@ -1,6 +1,6 @@
 ﻿namespace Crm.Data.Entities;
 
-public class Project
+public class ProjectEntity
 {
     public Guid Id { get; set; }
     public string Name { get; set; }
