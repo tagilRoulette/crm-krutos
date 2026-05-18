@@ -1,6 +1,9 @@
+using Crm.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
-public class AppDbContext : DbContext
+namespace Crm.Data.Contexts;
+
+public class AppDbContext : DbContext // Удалить?
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<CrmElement> Elements => Set<CrmElement>();
@@ -9,8 +12,6 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<CrmElement>(entity =>
         {
-            entity.ToTable("users");
-                  
             entity.ToTable("crm_elements");
 
             entity.HasKey(x => x.Id);
@@ -27,7 +28,7 @@ public class AppDbContext : DbContext
 
             entity.Property(x => x.Y)
             .HasColumnName("y_coordinate")
-            .IsRequired(); 
+            .IsRequired();
 
             entity.Property(x => x.LastModified)
                 .HasColumnName("last_modified")

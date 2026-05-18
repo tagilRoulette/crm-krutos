@@ -3,5 +3,4 @@
 public struct ProjectCreateRequest
 {
     public string Name { get; set; }
-    public string NavigationType { get; set; }
 }

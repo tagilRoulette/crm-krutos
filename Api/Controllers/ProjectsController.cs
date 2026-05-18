@@ -1,6 +1,6 @@
 ﻿using Crm.Api.Controllers.DTO.Request;
 using Crm.Api.Controllers.DTO.Response;
-using Crm.Api.DTOsHanlders.Interfaces;
+using Crm.Api.DTOHanlders.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Crm.Api.Controllers;
