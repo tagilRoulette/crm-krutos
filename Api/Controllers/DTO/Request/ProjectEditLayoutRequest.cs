@@ -1,8 +1,9 @@
-﻿namespace Crm.Api.Controllers.DTO.Request;
+﻿using Crm.Logic;
 
-public struct ProjectEditLayoutRequest
+namespace Crm.Api.Controllers.DTO.Request;
+
+public record ProjectEditLayoutRequest
 {
-    public Guid Id { get; set; }
-    public string NavigationType { get; set; }
+    public NavigationType NavigationType { get; set; }
     public string LayoutJson { get; set; }
 }

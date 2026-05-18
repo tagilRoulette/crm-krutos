@@ -1,12 +1,12 @@
 using System.Collections.Concurrent;
 
-namespace Crm.Layout;
+namespace Crm.Logic.Layout;
 
 public class LayoutStateManager
 {
-    private readonly ConcurrentDictionary<string, ElementPosition> _positions = new();
+    private readonly ConcurrentDictionary<Guid, ElementPosition> _positions = new();
 
-    public void UpdatePosition(string objectId, int x, int y)
+    public void UpdatePosition(Guid objectId, int x, int y)
     {
         _positions.AddOrUpdate(
             objectId,
@@ -19,7 +19,7 @@ public class LayoutStateManager
             });
     }
 
-    public ElementPosition? GetElementState(string objectId)
+    public ElementPosition? GetElementState(Guid objectId)
     {
         _positions.TryGetValue(objectId, out var state);
         return state;

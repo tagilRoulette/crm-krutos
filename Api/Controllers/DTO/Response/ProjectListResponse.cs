@@ -1,6 +1,6 @@
 ﻿namespace Crm.Api.Controllers.DTO.Response;
 
-public struct ProjectListResponse
+public record ProjectListResponse
 {
     public IReadOnlyCollection<ProjectResponse> Projects { get; set; }
 

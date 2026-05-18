@@ -6,11 +6,11 @@ namespace Crm.Data.Contexts;
 public class AppDbContext : DbContext // Удалить?
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-    public DbSet<CrmElement> Elements => Set<CrmElement>();
+    public DbSet<CrmElementEntity> Elements => Set<CrmElementEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CrmElement>(entity =>
+        modelBuilder.Entity<CrmElementEntity>(entity =>
         {
             entity.ToTable("crm_elements");
 

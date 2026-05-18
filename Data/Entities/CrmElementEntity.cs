@@ -1,6 +1,6 @@
 namespace Crm.Data.Entities;
 
-public class CrmElement
+public class CrmElementEntity
 {
     public Guid Id { get; set; }
     public int X { get; set; }

@@ -14,14 +14,20 @@ public class ProjectDTOHandler : IProjectDTOHandler
         _projectsService = projectsService;
     }
 
-    public async Task ChangeProjectNameAsync(Guid id, string newName, CancellationToken cancellationToken)
+    public async Task ChangeProjectNameAsync(
+        Guid id,
+        string newName,
+        CancellationToken cancellationToken)
     {
         await _projectsService.ChangeProjectNameAsync(id, newName, cancellationToken);
     }
 
-    public Task<ProjectResponse> CreateProjectAsync(string projectName, CancellationToken cancellationToken)
+    public async Task<ProjectResponse> CreateProjectAsync(
+        string projectName,
+        CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var project = await _projectsService.CreateProjectAsync(projectName, cancellationToken);
+        return new(project.Id, projectName, project.NavigationType, project.CreatedAt, );
     }
 
     public Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
@@ -34,7 +40,10 @@ public class ProjectDTOHandler : IProjectDTOHandler
         throw new NotImplementedException();
     }
 
-    public Task<ProjectResponse> EditProjectAsync(ProjectEditLayoutRequest request, CancellationToken cancellationToken)
+    public Task<ProjectResponse> EditProjectAsync(
+        Guid id,
+        ProjectEditLayoutRequest request,
+        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

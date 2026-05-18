@@ -24,7 +24,9 @@ public class ProjectsController : Controller
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<ProjectResponse>> GetProjectByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<ProjectResponse>> GetProjectByIdAsync(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
     {
         var project = await _DTOhandler.GetProjectByIdAsync(id, cancellationToken);
         return Ok(project);
@@ -32,58 +34,53 @@ public class ProjectsController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public Task<ActionResult<ProjectResponse>> Create([FromBody] ProjectCreateRequest request)
+    public async Task<ActionResult<ProjectResponse>> CreateProjectAsync(
+        [FromBody] ProjectCreateRequest request,
+        CancellationToken cancellationToken)
     {
-
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
+        var project = await _DTOhandler.CreateProjectAsync(request.Name, cancellationToken);
+        return Ok(project);
     }
 
-    // GET: ProjectsController/Edit/5
-    public ActionResult Edit(int id)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<ProjectResponse>> EditProjectAsync(
+        [FromBody] ProjectEditLayoutRequest request,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken)
     {
-        return View();
+        var project = await _DTOhandler.EditProjectAsync(id, request, cancellationToken);
+        return Ok(project);
     }
 
-    // POST: ProjectsController/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Edit(int id, IFormCollection collection)
+    [HttpPut("{id:guid}/set-name")]
+    public async Task<IActionResult> ChangeProjectNameAsync(
+        [FromBody] ProjectChangeNameRequest request,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+        )
     {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
+        await _DTOhandler.ChangeProjectNameAsync(id, request.NewName, cancellationToken);
+        return NoContent();
     }
 
-    // GET: ProjectsController/Delete/5
-    public ActionResult Delete(int id)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteProjectAsync(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+        )
     {
-        return View();
+        var isDeletedSuccessfully = await _DTOhandler.DeleteProjectAsync(id, cancellationToken);
+        if (isDeletedSuccessfully) return NoContent();
+        return NotFound();
     }
 
-    // POST: ProjectsController/Delete/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Delete(int id, IFormCollection collection)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAllProjectsAsync(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+        )
     {
-        try
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        catch
-        {
-            return View();
-        }
+        await _DTOhandler.DeleteAllProjectsAsync(cancellationToken);
+        return NoContent();
     }
 }

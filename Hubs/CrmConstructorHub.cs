@@ -1,5 +1,6 @@
 using Crm.Data.Contexts;
-using Crm.Layout;
+using Crm.Data.Entities;
+using Crm.Logic.Layout;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,8 +15,7 @@ public class CrmConstructorHub : Hub
         _dbFactory = dbFactory;
     }
 
-   
-    public async Task MoveObject(string objectId, int x, int y)
+    public async Task MoveObject(Guid objectId, int x, int y)
     {
         _stateManager.UpdatePosition(objectId, x, y);
 
@@ -24,7 +24,7 @@ public class CrmConstructorHub : Hub
     }
 
     // 2. ФИКСАЦИЯ В БД - Вызывается, когда мышку отпустили (onDragStop)
-    public async Task SaveElementPosition(string objectId)
+    public async Task SaveElementPosition(Guid objectId)
     {
         var finalState = _stateManager.GetElementState(objectId);
 
@@ -41,7 +41,7 @@ public class CrmConstructorHub : Hub
             }
             else
             {
-                element = new CrmElement { Id = objectId, X = finalState.X, Y = finalState.Y };
+                element = new CrmElementEntity { Id = objectId, X = finalState.X, Y = finalState.Y };
                 context.Elements.Add(element);
             }
 

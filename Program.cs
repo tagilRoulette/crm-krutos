@@ -1,15 +1,13 @@
-using Crm.Data.Contexts;
-using Crm.Layout;
+using Crm.Data;
+using Crm.Logic;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
-builder.Services.AddDbContextFactory<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddSingleton<LayoutStateManager>();
+builder.Services.AddDal(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddLogic();
 
 builder.Services.AddCors(options =>
 {

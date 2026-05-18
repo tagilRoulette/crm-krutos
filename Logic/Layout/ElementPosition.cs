@@ -1,4 +1,4 @@
-namespace Crm.Layout;
+namespace Crm.Logic.Layout;
 
 public class ElementPosition
 {
