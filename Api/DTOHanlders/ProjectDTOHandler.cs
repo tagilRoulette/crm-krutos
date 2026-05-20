@@ -27,7 +27,12 @@ public class ProjectDTOHandler : IProjectDTOHandler
         CancellationToken cancellationToken)
     {
         var project = await _projectsService.CreateProjectAsync(projectName, cancellationToken);
-        return new(project.Id, projectName, project.NavigationType, project.CreatedAt, );
+        return new(
+            project.Id,
+            projectName,
+            project.NavigationType,
+            project.CreatedAt,
+            project.LayoutJson);
     }
 
     public Task DeleteAllProjectsAsync(CancellationToken cancellationToken)

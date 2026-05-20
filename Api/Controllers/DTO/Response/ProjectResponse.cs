@@ -4,11 +4,11 @@ namespace Crm.Api.Controllers.DTO.Response;
 
 public record ProjectResponse
 {
-    required public Guid Id { get; set; }
-    required public string Name { get; set; }
-    required public NavigationType NavigationType { get; set; }
-    required public DateTime CreatedAt { get; set; }
-    required public string LayoutJson { get; set; }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public NavigationType NavigationType { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string LayoutJson { get; set; }
 
     public ProjectResponse(
         Guid id,
