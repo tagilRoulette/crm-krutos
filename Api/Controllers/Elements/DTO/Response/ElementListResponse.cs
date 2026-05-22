@@ -4,10 +4,10 @@ namespace Crm.Api.Controllers.Elements.DTO.Response;
 
 public class ElementListResponse
 {
-    public IReadOnlyCollection<ProjectResponse> Projects { get; set; }
+    public IReadOnlyCollection<ElementResponse> Elements { get; set; }
 
-    public ElementListResponse(IReadOnlyCollection<ProjectResponse> projects)
+    public ElementListResponse(IReadOnlyCollection<ElementResponse> elements)
     {
-        Projects = projects;
+        Elements = elements;
     }
 }

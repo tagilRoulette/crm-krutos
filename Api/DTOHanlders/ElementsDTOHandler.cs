@@ -1,44 +1,69 @@
 ﻿using Crm.Api.Controllers.Elements.DTO.Response;
 using Crm.Api.DTOHanlders.Interfaces;
+using Crm.Logic.Services.Interfaces;
 
 namespace Crm.Api.DTOHanlders;
 
 public class ElementsDTOHandler : IElementsDTOHandler
 {
-    //_
+    private readonly IElementsService _elementsService;
 
-    public Task ChangeElementAsync(Guid id, string json, CancellationToken cancellationToken)
+    public ElementsDTOHandler(IElementsService elementsService)
     {
-        throw new NotImplementedException();
+        _elementsService = elementsService;
     }
 
-    public Task<ElementResponse> CreateElementAsync(string? json, CancellationToken cancellationToken)
+    public async Task<ElementResponse> GetElementByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var model = await _elementsService.GetElementByIdAsync(id, cancellationToken);
+        return MapToResponse(model);
     }
 
-    public Task DeleteAllElementsAsync(CancellationToken cancellationToken)
+    public async Task<ElementListResponse> GetAllElementsAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var models = await _elementsService.GetAllElementsAsync(cancellationToken);
+
+        var responses = models.Select(MapToResponse).ToList();
+        return new ElementListResponse(responses);
     }
 
-    public Task<bool> DeleteElementAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ElementListResponse> GetElementsByProjectIdAsync(Guid projectId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var models = await _elementsService.GetElementsByProjectIdAsync(projectId, cancellationToken);
+
+        var responses = models.Select(MapToResponse).ToList();
+        return new ElementListResponse(responses);
     }
 
-    public Task<ElementListResponse> GetAllElementsAsync(CancellationToken cancellationToken)
+    public async Task<ElementResponse> CreateElementAsync(string? json, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var model = await _elementsService.CreateElementAsync(json, cancellationToken);
+        return MapToResponse(model);
     }
 
-    public Task<ElementResponse> GetElementByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task ChangeElementAsync(Guid id, string json, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _elementsService.ChangeElementAsync(id, json, cancellationToken);
     }
 
-    public Task<ElementListResponse> GetElementsByProjectIdAsync(Guid projectId, CancellationToken cancellationToken)
+    public async Task<bool> DeleteElementAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _elementsService.DeleteElementAsync(id, cancellationToken);
+    }
+
+    public async Task DeleteAllElementsAsync(CancellationToken cancellationToken)
+    {
+        await _elementsService.DeleteAllElementsAsync(cancellationToken);
+    }
+
+    // Вспомогательный метод для маппинга, чтобы не дублировать код
+    private static ElementResponse MapToResponse(Crm.Logic.Models.ElementModel model)
+    {
+        return new ElementResponse
+        {
+            Id = model.Id,
+            Json = model.Json,
+            LastModified = model.LastModified
+        };
     }
 }
