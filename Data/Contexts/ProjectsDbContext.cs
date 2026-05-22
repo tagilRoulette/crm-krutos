@@ -34,7 +34,16 @@ public class ProjectsDbContext : DbContext
                 .HasColumnName("layout_json")
                 .IsRequired();
         });
+        modelBuilder.Entity<CrmElementEntity>(entity =>
+        {
+            entity.ToTable("crm_elements");
+            entity.HasKey(x => x.Id);
 
+            entity.HasOne(e => e.Project)           
+                .WithMany()                         
+                .HasForeignKey(e => e.ProjectId)    
+                .OnDelete(DeleteBehavior.Cascade); 
+        });
         base.OnModelCreating(modelBuilder);
     }
 }

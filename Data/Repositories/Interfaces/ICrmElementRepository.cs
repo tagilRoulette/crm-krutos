@@ -8,4 +8,5 @@ public interface ICrmElementsRepository
     Task AddAsync(CrmElementEntity element, CancellationToken cancellationToken);
     void Update(CrmElementEntity element);
     Task DeleteAsync(string id, CancellationToken cancellationToken);
+    Task SaveAsync(CancellationToken cancellationToken);
 }

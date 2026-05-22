@@ -15,7 +15,7 @@ public class CrmElementsRepository : ICrmElementsRepository
         _context = context;
     }
 
-    public async Task<CrmElementEntity?> GetByIdAsync(string id, CancellationToken cancellationToken)
+    public async Task<CrmElementEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _context.Elements.FindAsync(new object[] { id }, cancellationToken);
     }
@@ -30,12 +30,16 @@ public class CrmElementsRepository : ICrmElementsRepository
         _context.Elements.Update(element);
     }
 
-    public async Task DeleteAsync(string id, CancellationToken cancellationToken)
+    public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         var element = await _context.Elements.FindAsync(new object[] { id }, cancellationToken);
         if (element != null)
         {
             _context.Elements.Remove(element);
         }
+    }
+    public async Task SaveAsync(CancellationToken cancellationToken)
+    {
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

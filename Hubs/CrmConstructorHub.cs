@@ -1,52 +1,65 @@
-using Crm.Data.Contexts;
-using Crm.Data.Entities;
-using Crm.Logic.Layout;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
+using Crm.Data.Entities;
+using Crm.Data.Repositories; 
+using System;
+using System.Threading.Tasks;
+
+namespace Crm.Infrastructure.Hubs;
 
 public class CrmConstructorHub : Hub
 {
     private readonly LayoutStateManager _stateManager;
-    private readonly IDbContextFactory<AppDbContext> _dbFactory;
+    private readonly ICrmElementRepository _repository;
 
-    public CrmConstructorHub(LayoutStateManager stateManager, IDbContextFactory<AppDbContext> dbFactory)
+    public CrmConstructorHub(LayoutStateManager stateManager, ICrmElementRepository repository)
     {
         _stateManager = stateManager;
-        _dbFactory = dbFactory;
+        _repository = repository;
     }
 
-    public async Task MoveObject(Guid objectId, int x, int y)
+  
+    public async Task MoveObject(Guid elementId, double x, double y)
     {
-        _stateManager.UpdatePosition(objectId, x, y);
-
-        // Мгновенно рассылаем всем остальным
-        await Clients.Others.SendAsync("ReceiveNewPosition", objectId, x, y);
+        _stateManager.UpdateElementState(elementId, x, y);
+        await Clients.Others.SendAsync("ReceiveNewPosition", elementId, x, y);
     }
 
-    // 2. ФИКСАЦИЯ В БД - Вызывается, когда мышку отпустили (onDragStop)
-    public async Task SaveElementPosition(Guid objectId)
+    
+    public async Task SaveElementPosition(Guid elementId, Guid projectId)
     {
-        var finalState = _stateManager.GetElementState(objectId);
+        var finalState = _stateManager.GetElementState(elementId);
 
         if (finalState != null)
         {
-            // Открываем короткое соединение с базой
-            using var context = await _dbFactory.CreateDbContextAsync();
+            var element = await _repository.GetByIdAsync(elementId, Context.ConnectionAborted);
 
-            var element = await context.Elements.FindAsync(objectId);
             if (element != null)
             {
+               
                 element.X = finalState.X;
                 element.Y = finalState.Y;
+                element.LastModified = DateTime.UtcNow;
+
+                element.ProjectId = projectId;
+
+                _repository.Update(element);
             }
             else
             {
-                element = new CrmElementEntity { Id = objectId, X = finalState.X, Y = finalState.Y };
-                context.Elements.Add(element);
+                
+                element = new CrmElementEntity
+                {
+                    Id = elementId,
+                    ProjectId = projectId,
+                    X = finalState.X,
+                    Y = finalState.Y,
+                    LastModified = DateTime.UtcNow
+                };
+                await _repository.AddAsync(element, Context.ConnectionAborted);
             }
 
-            element.LastModified = DateTime.UtcNow;
-            await context.SaveChangesAsync();
+          
+            await _repository.SaveChangesAsync(Context.ConnectionAborted);
         }
     }
 }
