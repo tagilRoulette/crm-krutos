@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crm.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(ElementsDbContext))]
     [Migration("20260511073602_FixTypesAndTable")]
     partial class FixTypesAndTable
     {

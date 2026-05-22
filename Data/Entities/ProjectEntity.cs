@@ -8,5 +8,5 @@ public record ProjectEntity
     public string Name { get; set; }
     public NavigationType NavigationType { get; set; }
     public DateTime CreatedAt { get; set; }
-    public string LayoutJson { get; set; }
+    public List<Guid> Elements { get; set; }
 }

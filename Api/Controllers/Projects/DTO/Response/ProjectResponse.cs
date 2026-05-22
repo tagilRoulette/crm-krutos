@@ -1,6 +1,6 @@
 ﻿using Crm.Logic;
 
-namespace Crm.Api.Controllers.DTO.Response;
+namespace Crm.Api.Controllers.Projects.DTO.Response;
 
 public record ProjectResponse
 {
@@ -8,19 +8,19 @@ public record ProjectResponse
     public string Name { get; set; }
     public NavigationType NavigationType { get; set; }
     public DateTime CreatedAt { get; set; }
-    public string LayoutJson { get; set; }
+    public IReadOnlyList<Guid> Elements { get; set; }
 
     public ProjectResponse(
         Guid id,
         string name,
         NavigationType navigationType,
         DateTime createdAt,
-        string layoutJson)
+        IReadOnlyList<Guid> elements)
     {
         Id = id;
         Name = name;
         NavigationType = navigationType;
         CreatedAt = createdAt;
-        LayoutJson = layoutJson;
+        Elements = elements;
     }
 }

@@ -1,5 +1,4 @@
-﻿using Crm.Api.Controllers.DTO.Request;
-using Crm.Data.Repositories.Interfaces;
+﻿using Crm.Data.Repositories.Interfaces;
 using Crm.Infrastructure;
 using Crm.Logic.Models;
 using Crm.Logic.Services.Interfaces;
@@ -28,15 +27,16 @@ public class ProjectsService : IProjectsService
         var guid = Guid.NewGuid();
         var navType = NavigationType.Side;
         var createdAt = DateTime.UtcNow;
-        string templateJson = EmbeddedResourcesReader.ReadJson(projectName, _fileProvider);
+        var elements = EmbeddedResourcesReader.ReadJson<List<Guid>>(projectName, _fileProvider);
+        if (elements is null) throw new FileNotFoundException("Template JSON is empty or incorrect.");
         var project = await _projectsRepository.CreateProjectAsync(
             guid,
             projectName,
             navType,
             createdAt,
-            templateJson,
+            elements,
             cancellationToken);
-        return new(guid, projectName, navType, createdAt, templateJson);
+        return new(guid, projectName, navType, createdAt, elements);
     }
 
     public async Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
@@ -47,11 +47,6 @@ public class ProjectsService : IProjectsService
     public async Task<bool> DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
     {
         return await _projectsRepository.DeleteProjectAsync(id, cancellationToken);
-    }
-
-    public async Task<ProjectModel> EditProjectAsync(ProjectEditLayoutRequest request, CancellationToken cancellationToken)
-    {
-        return await EditProjectAsync(request, cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<ProjectModel>> GetAllProjectsAsync(CancellationToken cancellationToken)

@@ -7,7 +7,7 @@ public static class DalStartUp
 {
     public static void AddDal(this IServiceCollection services, string? connectionString)
     {
-        services.AddDbContextFactory<AppDbContext>(options =>
+        services.AddDbContextFactory<ElementsDbContext>(options =>
             options.UseNpgsql(connectionString));
         services.AddDbContextFactory<ProjectsDbContext>(options =>
             options.UseNpgsql(connectionString));

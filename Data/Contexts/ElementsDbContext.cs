@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Crm.Data.Contexts;
 
-public class AppDbContext : DbContext // Удалить?
+public class ElementsDbContext : DbContext // Удалить?
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public ElementsDbContext(DbContextOptions<ElementsDbContext> options) : base(options) { }
     public DbSet<CrmElementEntity> Elements => Set<CrmElementEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -16,18 +16,8 @@ public class AppDbContext : DbContext // Удалить?
 
             entity.HasKey(x => x.Id);
 
-            entity.Property(x => x.X)
-            .HasColumnName("x_coordinate")
-            .HasMaxLength(200)
-            .IsRequired();
-
-            entity.Property(x => x.Y)
-            .HasColumnName("y_coordinate")
-            .HasMaxLength(200)
-            .IsRequired();
-
-            entity.Property(x => x.Y)
-            .HasColumnName("y_coordinate")
+            entity.Property(x => x.Json)
+            .HasColumnName("json")
             .IsRequired();
 
             entity.Property(x => x.LastModified)

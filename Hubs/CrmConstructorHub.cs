@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 public class CrmConstructorHub : Hub
 {
     private readonly LayoutStateManager _stateManager;
-    private readonly IDbContextFactory<AppDbContext> _dbFactory;
+    private readonly IDbContextFactory<ElementsDbContext> _dbFactory;
 
-    public CrmConstructorHub(LayoutStateManager stateManager, IDbContextFactory<AppDbContext> dbFactory)
+    public CrmConstructorHub(LayoutStateManager stateManager, IDbContextFactory<ElementsDbContext> dbFactory)
     {
         _stateManager = stateManager;
         _dbFactory = dbFactory;

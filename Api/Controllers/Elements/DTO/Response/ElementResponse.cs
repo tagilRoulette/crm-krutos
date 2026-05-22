@@ -1,6 +1,6 @@
-namespace Crm.Data.Entities;
+﻿namespace Crm.Api.Controllers.Elements.DTO.Response;
 
-public class CrmElementEntity
+public record ElementResponse
 {
     public Guid Id { get; set; }
     public string? Json { get; set; }

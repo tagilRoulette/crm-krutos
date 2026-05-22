@@ -1,5 +1,4 @@
-﻿using Crm.Api.Controllers.DTO.Request;
-using Crm.Data.Entities;
+﻿using Crm.Data.Entities;
 using Crm.Logic;
 
 namespace Crm.Data.Repositories.Interfaces;
@@ -13,9 +12,8 @@ public interface IProjectsRepository
         string projectName,
         NavigationType navigationType,
         DateTime CreatedAt,
-        string LayoutJson,
+        List<Guid> LayoutJson,
         CancellationToken cancellationToken);
-    public Task<ProjectEntity> EditProjectAsync(ProjectEditLayoutRequest request, CancellationToken cancellationToken);
     public Task ChangeProjectNameAsync(Guid id, string newName, CancellationToken cancellationToken);
     public Task<bool> DeleteProjectAsync(Guid id, CancellationToken cancellationToken);
     public Task DeleteAllProjectsAsync(CancellationToken cancellationToken);

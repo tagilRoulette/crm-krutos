@@ -1,4 +1,4 @@
-﻿namespace Crm.Api.Controllers.DTO.Response;
+﻿namespace Crm.Api.Controllers.Projects.DTO.Response;
 
 public record ProjectListResponse
 {

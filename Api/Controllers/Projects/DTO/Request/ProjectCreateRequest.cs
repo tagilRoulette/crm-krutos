@@ -1,4 +1,4 @@
-﻿namespace Crm.Api.Controllers.DTO.Request;
+﻿namespace Crm.Api.Controllers.Projects.DTO.Request;
 
 public record ProjectCreateRequest
 {

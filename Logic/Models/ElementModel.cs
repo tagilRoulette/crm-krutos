@@ -1,6 +1,6 @@
-namespace Crm.Data.Entities;
+﻿namespace Crm.Logic.Models;
 
-public class CrmElementEntity
+public class ElementModel
 {
     public Guid Id { get; set; }
     public string? Json { get; set; }

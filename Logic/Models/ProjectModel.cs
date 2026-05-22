@@ -6,13 +6,13 @@ public class ProjectModel
     public string Name { get; set; }
     public NavigationType NavigationType { get; set; }
     public DateTime CreatedAt { get; set; }
-    public string LayoutJson { get; set; }
-    public ProjectModel(Guid id, string name, NavigationType navigationType, DateTime createdAt, string layoutJson)
+    public List<Guid> Elements { get; set; }
+    public ProjectModel(Guid id, string name, NavigationType navigationType, DateTime createdAt, List<Guid> elements)
     {
         Id = id;
         Name = name;
         NavigationType = navigationType;
         CreatedAt = createdAt;
-        LayoutJson = layoutJson;
+        Elements = elements;
     }
 }

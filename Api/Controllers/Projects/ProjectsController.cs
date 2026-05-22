@@ -1,9 +1,10 @@
-﻿using Crm.Api.Controllers.DTO.Request;
-using Crm.Api.Controllers.DTO.Response;
+﻿using Crm.Api.Controllers.Elements.DTO.Request;
+using Crm.Api.Controllers.Projects.DTO.Request;
+using Crm.Api.Controllers.Projects.DTO.Response;
 using Crm.Api.DTOHanlders.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Crm.Api.Controllers;
+namespace Crm.Api.Controllers.Projects;
 
 [ApiController]
 [Route("/api/projects")]
@@ -42,24 +43,14 @@ public class ProjectsController : Controller
         return Ok(project);
     }
 
-    [HttpPut("{id:guid}")]
-    public async Task<ActionResult<ProjectResponse>> EditProjectAsync(
-        [FromBody] ProjectEditLayoutRequest request,
-        [FromRoute] Guid id,
-        CancellationToken cancellationToken)
-    {
-        var project = await _DTOhandler.EditProjectAsync(id, request, cancellationToken);
-        return Ok(project);
-    }
-
     [HttpPut("{id:guid}/set-name")]
     public async Task<IActionResult> ChangeProjectNameAsync(
-        [FromBody] ProjectChangeNameRequest request,
+        [FromBody] ElementChangeJsonRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken
         )
     {
-        await _DTOhandler.ChangeProjectNameAsync(id, request.NewName, cancellationToken);
+        await _DTOhandler.ChangeProjectNameAsync(id, request.Json, cancellationToken);
         return NoContent();
     }
 

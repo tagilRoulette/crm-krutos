@@ -8,9 +8,9 @@ namespace Crm.Data.Repositories;
 
 public class CrmElementsRepository : ICrmElementsRepository
 {
-    private readonly AppDbContext _context;
+    private readonly ElementsDbContext _context;
 
-    public CrmElementsRepository(AppDbContext context)
+    public CrmElementsRepository(ElementsDbContext context)
     {
         _context = context;
     }

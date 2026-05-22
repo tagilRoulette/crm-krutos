@@ -1,5 +1,4 @@
-﻿using Crm.Api.Controllers.DTO.Request;
-using Crm.Api.Controllers.DTO.Response;
+﻿using Crm.Api.Controllers.Projects.DTO.Response;
 using Crm.Api.DTOHanlders.Interfaces;
 using Crm.Logic.Services.Interfaces;
 
@@ -32,7 +31,7 @@ public class ProjectDTOHandler : IProjectDTOHandler
             projectName,
             project.NavigationType,
             project.CreatedAt,
-            project.LayoutJson);
+            project.Elements);
     }
 
     public Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
@@ -41,14 +40,6 @@ public class ProjectDTOHandler : IProjectDTOHandler
     }
 
     public Task<bool> DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ProjectResponse> EditProjectAsync(
-        Guid id,
-        ProjectEditLayoutRequest request,
-        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

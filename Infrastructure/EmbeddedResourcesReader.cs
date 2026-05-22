@@ -1,22 +1,20 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using System.Data.SqlTypes;
+using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 
 namespace Crm.Infrastructure;
 
 public static class EmbeddedResourcesReader
 {
-    public static string ReadJson(string name, EmbeddedFileProvider fileProvider)
+    public static T? ReadJson<T>(string name, EmbeddedFileProvider fileProvider)
     {
-        //Assembly asm = Assembly.GetExecutingAssembly();
-        //string resourceName = asm
-        //    .GetManifestResourceNames()
-        //    .Single(str => str.EndsWith(name));
-
         var fileInfo = fileProvider.GetFileInfo(name);
-        if (fileInfo.Exists) throw new FileNotFoundException("Resource not found.");
+        if (!fileInfo.Exists) throw new FileNotFoundException("Resource not found.");
 
         using Stream stream = fileInfo.CreateReadStream();
-        //?? throw new FileNotFoundException("Resource not found.");
-        using StreamReader reader = new(stream);
-        return reader.ReadToEnd();
+        using StreamReader streamReader = new(stream);
+        using JsonTextReader reader = new(streamReader);
+        var serializer = JsonSerializer.Create();
+        return serializer.Deserialize<T>(reader);
     }
 }
