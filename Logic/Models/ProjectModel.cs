@@ -6,8 +6,12 @@ public class ProjectModel
     public string Name { get; set; }
     public NavigationType NavigationType { get; set; }
     public DateTime CreatedAt { get; set; }
-    public List<Guid> Elements { get; set; }
-    public ProjectModel(Guid id, string name, NavigationType navigationType, DateTime createdAt, List<Guid> elements)
+    public List<ElementModel> Elements { get; set; }
+    public ProjectModel(Guid id,
+        string name,
+        NavigationType navigationType,
+        DateTime createdAt,
+        List<ElementModel> elements)
     {
         Id = id;
         Name = name;

@@ -1,4 +1,6 @@
 ﻿using Crm.Data.Contexts;
+using Crm.Data.Repositories;
+using Crm.Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crm.Data;
@@ -11,5 +13,8 @@ public static class DalStartUp
             options.UseNpgsql(connectionString));
         services.AddDbContextFactory<ProjectsDbContext>(options =>
             options.UseNpgsql(connectionString));
+
+        services.AddScoped<ICrmElementRepository, CrmElementRepository>();
+        services.AddScoped<IProjectsRepository, ProjectsRepository>();
     }
 }

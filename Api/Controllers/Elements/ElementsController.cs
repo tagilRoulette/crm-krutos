@@ -49,7 +49,7 @@ public class ElementsController : Controller
         [FromBody] ElementCreateRequest request,
         CancellationToken cancellationToken)
     {
-        var elements = await _DTOhandler.CreateElementAsync(request.Json, cancellationToken);
+        var elements = await _DTOhandler.CreateElementAsync(request.ProjectId, request.Json, cancellationToken);
         return Ok(elements);
     }
 

@@ -35,9 +35,9 @@ public class ElementsDTOHandler : IElementsDTOHandler
         return new ElementListResponse(responses);
     }
 
-    public async Task<ElementResponse> CreateElementAsync(string? json, CancellationToken cancellationToken)
+    public async Task<ElementResponse> CreateElementAsync(Guid projectId, string? json, CancellationToken cancellationToken)
     {
-        var model = await _elementsService.CreateElementAsync(json, cancellationToken);
+        var model = await _elementsService.CreateElementAsync(projectId, json, cancellationToken);
         return MapToResponse(model);
     }
 

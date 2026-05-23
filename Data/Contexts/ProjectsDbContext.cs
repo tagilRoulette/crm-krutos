@@ -5,7 +5,7 @@ namespace Crm.Data.Contexts;
 
 public class ProjectsDbContext : DbContext
 {
-    public ProjectsDbContext(DbContextOptions<ElementsDbContext> options) : base(options) { }
+    public ProjectsDbContext(DbContextOptions<ProjectsDbContext> options) : base(options) { }
     public DbSet<ProjectEntity> Projects => Set<ProjectEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,7 +31,8 @@ public class ProjectsDbContext : DbContext
 
             entity.HasMany<CrmElementEntity>()
                 .WithOne()
-                .HasForeignKey(x => x.Id);
+                .HasForeignKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         base.OnModelCreating(modelBuilder);

@@ -2,5 +2,6 @@
 
 public record ElementCreateRequest
 {
+    public Guid ProjectId { get; set; }
     public string? Json { get; set; }
 }

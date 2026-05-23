@@ -3,13 +3,17 @@ using Crm.Infrastructure.Hubs;
 using Crm.Logic;
 using Crm.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Crm.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
+builder.Services.AddSingleton<CrmConstructorHub>();
 builder.Services.AddDal(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddLogic();
+builder.Services.AddApi();
+
 
 builder.Services.AddCors(options =>
 {

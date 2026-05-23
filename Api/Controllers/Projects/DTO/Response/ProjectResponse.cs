@@ -1,4 +1,5 @@
 ﻿using Crm.Logic;
+using Crm.Logic.Models;
 
 namespace Crm.Api.Controllers.Projects.DTO.Response;
 
@@ -8,14 +9,14 @@ public record ProjectResponse
     public string Name { get; set; }
     public NavigationType NavigationType { get; set; }
     public DateTime CreatedAt { get; set; }
-    public IReadOnlyList<Guid> Elements { get; set; }
+    public IReadOnlyList<ElementModel> Elements { get; set; }
 
     public ProjectResponse(
         Guid id,
         string name,
         NavigationType navigationType,
         DateTime createdAt,
-        IReadOnlyList<Guid> elements)
+        IReadOnlyList<ElementModel> elements)
     {
         Id = id;
         Name = name;

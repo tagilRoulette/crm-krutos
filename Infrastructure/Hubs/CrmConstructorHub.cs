@@ -8,29 +8,43 @@ namespace Crm.Infrastructure.Hubs;
 public class CrmConstructorHub : Hub
 {
     private readonly LayoutStateManager _stateManager;
-    private readonly ICrmElementRepository _repository;
+    private readonly ICrmElementRepository _elementRepository;
 
-    public CrmConstructorHub(LayoutStateManager stateManager, ICrmElementRepository repository)
+    public CrmConstructorHub(
+        LayoutStateManager stateManager,
+        ICrmElementRepository elementRepository,
+        IProjectsRepository projectRepository)
     {
         _stateManager = stateManager;
-        _repository = repository;
+        _elementRepository = elementRepository;
     }
 
-
-    public async Task UpdateState(Guid elementId, string json)
+    public async Task AddOrUpdateStateAsync(Guid elementId, string json, CancellationToken cancellationToken)
     {
-        _stateManager.UpdateState(elementId, json);
+        _stateManager.AddOrUpdateState(elementId, json);
+        var element = _elementRepository.GetByIdAsync(elementId, cancellationToken);
         await Clients.Others.SendAsync("ReceiveNewState", elementId, json);
     }
 
+    public async Task DeleteElementAsync(Guid elementId)
+    {
+        _stateManager.Remove(elementId);
+        await Clients.Others.SendAsync("DeleteElement", elementId);
+    }
 
-    public async Task SaveElementPosition(Guid elementId)
+    public async Task DeleteAllAsync()
+    {
+        _stateManager.RemoveAll();
+        await Clients.Others.SendAsync("DeleteAll");
+    }
+
+    public async Task SaveElementPositionAsync(Guid elementId)
     {
         var finalJson = _stateManager.GetElementState(elementId);
 
         if (finalJson != null)
         {
-            var element = await _repository.GetByIdAsync(elementId, Context.ConnectionAborted);
+            var element = await _elementRepository.GetByIdAsync(elementId, Context.ConnectionAborted);
 
             if (element != null)
             {
@@ -38,7 +52,7 @@ public class CrmConstructorHub : Hub
                 element.Json = finalJson;
                 element.LastModified = DateTime.UtcNow;
 
-                _repository.Update(element);
+                _elementRepository.Update(element);
             }
             else
             {
@@ -48,9 +62,9 @@ public class CrmConstructorHub : Hub
                     Json = finalJson,
                     LastModified = DateTime.UtcNow
                 };
-                await _repository.AddAsync(element, Context.ConnectionAborted);
+                await _elementRepository.AddAsync(element, Context.ConnectionAborted);
             }
-            await _repository.SaveChangesAsync(Context.ConnectionAborted);
+            await _elementRepository.SaveChangesAsync(Context.ConnectionAborted);
         }
     }
 }
