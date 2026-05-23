@@ -4,22 +4,17 @@ namespace Crm.Logic.Layout;
 
 public class LayoutStateManager
 {
-    private readonly ConcurrentDictionary<Guid, ElementPosition> _positions = new();
+    private readonly ConcurrentDictionary<Guid, string> _positions = new();
 
-    public void UpdatePosition(Guid objectId, int x, int y)
+    public void UpdateState(Guid objectId, string json)
     {
         _positions.AddOrUpdate(
             objectId,
-            new ElementPosition { X = x, Y = y },
-            (key, existing) =>
-            {
-                existing.X = x;
-                existing.Y = y;
-                return existing;
-            });
+            json,
+            (_, _) => json);
     }
 
-    public ElementPosition? GetElementState(Guid objectId)
+    public string? GetElementState(Guid objectId)
     {
         _positions.TryGetValue(objectId, out var state);
         return state;

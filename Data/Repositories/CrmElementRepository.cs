@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Crm.Data.Repositories;
 
-public class CrmElementsRepository : ICrmElementsRepository
+public class CrmElementRepository : ICrmElementRepository
 {
     private readonly ElementsDbContext _context;
 
-    public CrmElementsRepository(ElementsDbContext context)
+    public CrmElementRepository(ElementsDbContext context)
     {
         _context = context;
     }

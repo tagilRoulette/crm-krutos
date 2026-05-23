@@ -2,7 +2,7 @@ using Crm.Data.Entities;
 
 namespace Crm.Data.Repositories.Interfaces;
 
-public interface ICrmElementsRepository
+public interface ICrmElementRepository
 {
     Task<CrmElementEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
     Task<IReadOnlyCollection<CrmElementEntity>> GetAllAsync(CancellationToken cancellationToken);

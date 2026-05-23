@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Crm.Data.Contexts;
 
-public class ElementsDbContext : DbContext // Удалить?
+public class ElementsDbContext : DbContext
 {
     public ElementsDbContext(DbContextOptions<ElementsDbContext> options) : base(options) { }
     public DbSet<CrmElementEntity> Elements => Set<CrmElementEntity>();

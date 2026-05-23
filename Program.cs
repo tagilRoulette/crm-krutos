@@ -1,4 +1,5 @@
 using Crm.Data;
+using Crm.Infrastructure.Hubs;
 using Crm.Logic;
 using Microsoft.EntityFrameworkCore;
 

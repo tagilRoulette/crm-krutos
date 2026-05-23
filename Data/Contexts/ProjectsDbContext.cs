@@ -29,8 +29,9 @@ public class ProjectsDbContext : DbContext
                 .HasColumnName("created_at")
                 .IsRequired();
 
-            entity.Property(x => x.Elements)
-                .HasColumnName("elements");
+            entity.HasMany<CrmElementEntity>()
+                .WithOne()
+                .HasForeignKey(x => x.Id);
         });
 
         base.OnModelCreating(modelBuilder);

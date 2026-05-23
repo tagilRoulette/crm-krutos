@@ -7,11 +7,11 @@ namespace Crm.Logic.Services;
 
 public class ElementsService : IElementsService
 {
-	private readonly ICrmElementsRepository _elementsRepository;
+	private readonly ICrmElementRepository _elementsRepository;
 	private readonly IProjectsRepository _projectsRepository;
 
 	public ElementsService(
-		ICrmElementsRepository elementsRepository,
+		ICrmElementRepository elementsRepository,
 		IProjectsRepository projectsRepository)
 	{
 		_elementsRepository = elementsRepository;
@@ -23,7 +23,7 @@ public class ElementsService : IElementsService
 		var entity = await _elementsRepository.GetByIdAsync(id, cancellationToken);
 
 		if (entity == null)
-			throw new Exception($"Элемент с ID {id} не найден.");
+			throw new Exception($"пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ ID {id} пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.");
 
 		return new ElementModel
 		{
@@ -47,12 +47,12 @@ public class ElementsService : IElementsService
 
 	public async Task<IReadOnlyCollection<ElementModel>> GetElementsByProjectIdAsync(Guid projectId, CancellationToken cancellationToken)
 	{
-		// 1. Получаем проект, чтобы узнать ID его элементов
+		// 1. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ID пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		var project = await _projectsRepository.GetProjectByIdAsync(projectId, cancellationToken);
 		if (project == null || project.Elements == null || !project.Elements.Any())
 			return new List<ElementModel>();
 
-		// 2. Получаем сами элементы по списку ID
+		// 2. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ID
 		var entities = await _elementsRepository.GetByIdsAsync(project.Elements, cancellationToken);
 
 		return entities.Select(e => new ElementModel
