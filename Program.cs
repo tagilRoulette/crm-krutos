@@ -1,6 +1,7 @@
 using Crm.Data;
 using Crm.Infrastructure.Hubs;
 using Crm.Logic;
+using Crm.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,20 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var elementsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ElementsDbContext>>();
+    using (var elementsContext = elementsDbFactory.CreateDbContext())
+    {
+        elementsContext.Database.Migrate();
+    }
+    var projectsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ProjectsDbContext>>();
+    using (var projectsContext = projectsDbFactory.CreateDbContext())
+    {
+        projectsContext.Database.Migrate();
+    }
+}
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
