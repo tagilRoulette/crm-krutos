@@ -3,7 +3,7 @@ using Crm.Data.Repositories.Interfaces;
 using Crm.Infrastructure.Hubs;
 using Crm.Logic.Models;
 using Crm.Logic.Services.Interfaces;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Crm.Logic.Services;
 
@@ -74,8 +74,12 @@ public class ElementsService : IElementsService
             ProjectId = projectId,
         };
 
-        await _hub.AddOrUpdateStateAsync(entity.Id, entity.Json, cancellationToken);
-        await _hub.SaveElementPositionAsync(entity.Id, cancellationToken);
+        
+        await _elementsRepository.AddAsync(entity, cancellationToken);
+        await _elementsRepository.SaveChangesAsync(cancellationToken);
+
+        
+        await _hub.Clients.All.SendAsync("ReceiveNewState", entity.Id, entity.Json, cancellationToken);
 
         return new ElementModel
         {
@@ -93,11 +97,12 @@ public class ElementsService : IElementsService
             entity.Json = json;
             entity.LastModified = DateTime.UtcNow;
 
-            await _hub.AddOrUpdateStateAsync(id, json, cancellationToken);
-            await _hub.SaveElementPositionAsync(id, cancellationToken);
+            
+            _elementsRepository.Update(entity);
+            await _elementsRepository.SaveChangesAsync(cancellationToken);
 
-            //_elementsRepository.Update(entity);
-            //await _elementsRepository.SaveChangesAsync(cancellationToken);
+            
+            await _hub.Clients.All.SendAsync("ReceiveNewState", id, json, cancellationToken);
         }
     }
 
@@ -107,15 +112,22 @@ public class ElementsService : IElementsService
         if (entity == null)
             return false;
 
-        await _hub.DeleteElementAsync(id, cancellationToken);
+       
+        await _elementsRepository.DeleteAsync(id, cancellationToken);
         await _elementsRepository.SaveChangesAsync(cancellationToken);
+
+        
+        await _hub.Clients.All.SendAsync("DeleteElement", id, cancellationToken);
 
         return true;
     }
 
     public async Task DeleteAllElementsAsync(CancellationToken cancellationToken)
     {
-        await _hub.DeleteAllAsync(cancellationToken);
+        await _elementsRepository.DeleteAllAsync(cancellationToken);
+        
         await _elementsRepository.SaveChangesAsync(cancellationToken);
+
+        await _hub.Clients.All.SendAsync("DeleteAll", cancellationToken);
     }
 }

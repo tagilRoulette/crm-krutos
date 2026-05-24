@@ -55,7 +55,8 @@ public class ProjectsService : IProjectsService
 
     public async Task<bool> DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _projectsRepository.DeleteProjectAsync(id, cancellationToken);
+        await _projectsRepository.DeleteProjectAsync(id, cancellationToken);
+        return true;
     }
 
     public async Task<IReadOnlyCollection<ProjectModel>> GetAllProjectsAsync(CancellationToken cancellationToken)
