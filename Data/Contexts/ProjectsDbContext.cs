@@ -28,11 +28,6 @@ public class ProjectsDbContext : DbContext
             entity.Property(x => x.CreatedAt)
                 .HasColumnName("created_at")
                 .IsRequired();
-
-            entity.HasMany<CrmElementEntity>()
-                .WithOne()
-                .HasForeignKey(x => x.Id)
-                .OnDelete(DeleteBehavior.Cascade);
         });
 
         base.OnModelCreating(modelBuilder);

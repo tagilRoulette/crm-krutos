@@ -3,6 +3,7 @@ using Crm.Data.Repositories.Interfaces;
 using Crm.Infrastructure.Hubs;
 using Crm.Logic.Models;
 using Crm.Logic.Services.Interfaces;
+using Microsoft.AspNet.SignalR;
 
 namespace Crm.Logic.Services;
 
@@ -10,12 +11,12 @@ public class ElementsService : IElementsService
 {
     private readonly ICrmElementRepository _elementsRepository;
     private readonly IProjectsRepository _projectsRepository;
-    private readonly CrmConstructorHub _hub;
+    private readonly IHubContext<CrmConstructorHub> _hub;
 
     public ElementsService(
         ICrmElementRepository elementsRepository,
         IProjectsRepository projectsRepository,
-        CrmConstructorHub constructorHub)
+        IHubContext<CrmConstructorHub> constructorHub)
     {
         _elementsRepository = elementsRepository;
         _projectsRepository = projectsRepository;
@@ -69,14 +70,12 @@ public class ElementsService : IElementsService
         {
             Id = Guid.NewGuid(),
             Json = json ?? "{}",
-            LastModified = DateTime.UtcNow
+            LastModified = DateTime.UtcNow,
+            ProjectId = projectId,
         };
 
         await _hub.AddOrUpdateStateAsync(entity.Id, entity.Json, cancellationToken);
-        await _hub.SaveElementPositionAsync(entity.Id);
-
-        await _projectsRepository.AddElementAsync(entity, projectId, cancellationToken);
-        await _projectsRepository.SaveChangesAsync(cancellationToken);
+        await _hub.SaveElementPositionAsync(entity.Id, cancellationToken);
 
         return new ElementModel
         {
@@ -95,7 +94,7 @@ public class ElementsService : IElementsService
             entity.LastModified = DateTime.UtcNow;
 
             await _hub.AddOrUpdateStateAsync(id, json, cancellationToken);
-            await _hub.SaveElementPositionAsync(id);
+            await _hub.SaveElementPositionAsync(id, cancellationToken);
 
             //_elementsRepository.Update(entity);
             //await _elementsRepository.SaveChangesAsync(cancellationToken);
@@ -108,7 +107,7 @@ public class ElementsService : IElementsService
         if (entity == null)
             return false;
 
-        await _hub.DeleteElementAsync(id);
+        await _hub.DeleteElementAsync(id, cancellationToken);
         await _elementsRepository.SaveChangesAsync(cancellationToken);
 
         return true;
@@ -116,7 +115,7 @@ public class ElementsService : IElementsService
 
     public async Task DeleteAllElementsAsync(CancellationToken cancellationToken)
     {
-        await _hub.DeleteAllAsync();
+        await _hub.DeleteAllAsync(cancellationToken);
         await _elementsRepository.SaveChangesAsync(cancellationToken);
     }
 }

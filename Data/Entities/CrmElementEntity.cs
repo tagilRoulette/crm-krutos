@@ -7,4 +7,5 @@ public class CrmElementEntity
     public DateTime LastModified { get; set; }
 
     public Guid ProjectId { get; set; }
+    public ProjectEntity Project { get; set; }
 }

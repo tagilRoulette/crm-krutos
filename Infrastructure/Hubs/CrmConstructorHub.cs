@@ -22,23 +22,22 @@ public class CrmConstructorHub : Hub
     public async Task AddOrUpdateStateAsync(Guid elementId, string json, CancellationToken cancellationToken)
     {
         _stateManager.AddOrUpdateState(elementId, json);
-        var element = _elementRepository.GetByIdAsync(elementId, cancellationToken);
-        await Clients.Others.SendAsync("ReceiveNewState", elementId, json);
+        await Clients.Others.SendAsync("ReceiveNewState", elementId, json, cancellationToken);
     }
 
-    public async Task DeleteElementAsync(Guid elementId)
+    public async Task DeleteElementAsync(Guid elementId, CancellationToken cancellationToken)
     {
         _stateManager.Remove(elementId);
-        await Clients.Others.SendAsync("DeleteElement", elementId);
+        await Clients.Others.SendAsync("DeleteElement", elementId, cancellationToken);
     }
 
-    public async Task DeleteAllAsync()
+    public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
         _stateManager.RemoveAll();
-        await Clients.Others.SendAsync("DeleteAll");
+        await Clients.Others.SendAsync("DeleteAll", cancellationToken);
     }
 
-    public async Task SaveElementPositionAsync(Guid elementId)
+    public async Task SaveElementPositionAsync(Guid elementId, CancellationToken cancellationToken)
     {
         var finalJson = _stateManager.GetElementState(elementId);
 

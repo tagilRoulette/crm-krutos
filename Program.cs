@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
-builder.Services.AddSingleton<CrmConstructorHub>();
 builder.Services.AddDal(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddLogic();
 builder.Services.AddApi();

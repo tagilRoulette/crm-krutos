@@ -23,6 +23,11 @@ public class ElementsDbContext : DbContext
             entity.Property(x => x.LastModified)
                 .HasColumnName("last_modified")
                 .IsRequired();
+
+            entity.HasOne<ProjectEntity>()
+            .WithMany(z => z.Elements)
+            .HasForeignKey(z => z.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade);
         });
 
         base.OnModelCreating(modelBuilder);

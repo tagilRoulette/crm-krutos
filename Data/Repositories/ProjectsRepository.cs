@@ -2,6 +2,7 @@
 using Crm.Data.Entities;
 using Crm.Data.Repositories.Interfaces;
 using Crm.Logic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crm.Data.Repositories;
 
@@ -14,38 +15,46 @@ public class ProjectsRepository : IProjectsRepository
         _context = context;
     }
 
-    public async Task AddElementAsync(CrmElementEntity element, Guid projectId, CancellationToken cancellationToken)
+    public async Task ChangeProjectNameAsync(Guid id, string newName, CancellationToken cancellationToken)
     {
-        var project = await _context.Projects.FindAsync(projectId) 
-            ?? throw new KeyNotFoundException($"Primary key {projectId} not found.");
-        project.Elements.Add(element);
-        await _context.SaveChangesAsync(cancellationToken);
+        var project = await _context.Projects.FindAsync(id, cancellationToken);
+        if (project is null) throw new KeyNotFoundException($"Project by id {id} not found.");
+        project.Name = newName;
+        _context.Projects.Update(project);
     }
 
-    public Task ChangeProjectNameAsync(Guid id, string newName, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ProjectEntity> CreateProjectAsync(
+    public async Task<ProjectEntity> CreateProjectAsync(
         Guid id,
         string projectName,
         NavigationType navigationType,
-        DateTime CreatedAt,
-        List<CrmElementEntity> LayoutJson,
+        DateTime createdAt,
+        List<CrmElementEntity> layoutJson,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        ProjectEntity project = new()
+        {
+            Id = id,
+            Name = projectName,
+            CreatedAt = createdAt,
+            Elements = layoutJson,
+            NavigationType = navigationType
+        };
+        await _context.Projects.AddAsync(project, cancellationToken);
+        return project;
     }
 
-    public Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
+    public async Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _context.Projects.ExecuteDeleteAsync(cancellationToken);
     }
 
-    public Task<bool> DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
+    public async Task DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var project = await GetProjectByIdAsync(id, cancellationToken);
+        if (project != null)
+        {
+            _context.Projects.Remove(project);
+        }
     }
 
     public Task<IReadOnlyCollection<ProjectEntity>> GetAllProjectsAsync(CancellationToken cancellationToken)
@@ -53,9 +62,10 @@ public class ProjectsRepository : IProjectsRepository
         throw new NotImplementedException();
     }
 
-    public Task<ProjectEntity> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProjectEntity> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _context.Projects.FindAsync(id, cancellationToken)
+            ?? throw new KeyNotFoundException($"Project by id {id} not found.");
     }
 
     public Task<ProjectEntity> GetProjectTemplateAsync(CancellationToken cancellationToken)
@@ -63,18 +73,8 @@ public class ProjectsRepository : IProjectsRepository
         throw new NotImplementedException();
     }
 
-    public Task RemoveElementAsync(Guid elementId, CancellationToken cancellationToken)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task SaveChangesAsync(CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateElementAsync(Guid elementId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
