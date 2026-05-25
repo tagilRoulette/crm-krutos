@@ -1,4 +1,4 @@
-﻿using Crm.Data.Entities;
+﻿    using Crm.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crm.Data.Contexts;
