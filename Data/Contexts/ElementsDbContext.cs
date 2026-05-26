@@ -24,7 +24,7 @@ public class ElementsDbContext : DbContext
                 .HasColumnName("last_modified")
                 .IsRequired();
 
-            entity.HasOne<ProjectEntity>()
+            entity.HasOne(x => x.Project)
             .WithMany(z => z.Elements)
             .HasForeignKey(z => z.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);

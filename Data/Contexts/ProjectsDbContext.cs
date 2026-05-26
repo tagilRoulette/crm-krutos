@@ -1,4 +1,4 @@
-﻿    using Crm.Data.Entities;
+﻿using Crm.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Crm.Data.Contexts;
@@ -33,6 +33,12 @@ public class ProjectsDbContext : DbContext
               .WithOne(e => e.Project)
               .HasForeignKey(e => e.ProjectId)
               .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<CrmElementEntity>(entity =>
+        {
+            entity.ToTable("crm_elements"); 
+            entity.HasKey(x => x.Id);
         });
 
         base.OnModelCreating(modelBuilder);
