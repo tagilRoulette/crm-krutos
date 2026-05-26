@@ -34,23 +34,39 @@ public class ProjectDTOHandler : IProjectDTOHandler
             project.Elements);
     }
 
-    public Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
+    public async Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _projectsService.DeleteAllProjectsAsync(cancellationToken);
     }
 
-    public Task<bool> DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<bool> DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _projectsService.DeleteProjectAsync(id, cancellationToken);
     }
 
-    public Task<ProjectListResponse> GetAllProjectsAsync(CancellationToken cancellationToken)
+    public async Task<ProjectListResponse> GetAllProjectsAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var projects = await _projectsService.GetAllProjectsAsync(cancellationToken);
+        ProjectListResponse projectsResponse = new(
+            projects.Select(x => new ProjectResponse(
+                x.Id,
+                x.Name,
+                x.NavigationType,
+                x.CreatedAt,
+                x.Elements))
+            .ToArray()
+            );
+        return projectsResponse;
     }
 
-    public Task<ProjectResponse> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ProjectResponse> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var project = await _projectsService.GetProjectByIdAsync(id, cancellationToken);
+        return new ProjectResponse(
+            project.Id,
+            project.Name,
+            project.NavigationType,
+            project.CreatedAt,
+            project.Elements);
     }
 }

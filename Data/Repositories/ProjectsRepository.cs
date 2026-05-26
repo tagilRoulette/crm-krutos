@@ -57,9 +57,9 @@ public class ProjectsRepository : IProjectsRepository
         }
     }
 
-    public Task<IReadOnlyCollection<ProjectEntity>> GetAllProjectsAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ProjectEntity>> GetAllProjectsAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _context.Projects.ToListAsync();
     }
 
     public async Task<ProjectEntity> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken)
