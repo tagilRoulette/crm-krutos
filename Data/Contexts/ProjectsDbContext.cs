@@ -29,16 +29,10 @@ public class ProjectsDbContext : DbContext
                 .HasColumnName("created_at")
                 .IsRequired();
 
-            entity.HasMany(p => p.Elements)
+            entity.HasMany(p => p.Pages)
               .WithOne(e => e.Project)
               .HasForeignKey(e => e.ProjectId)
               .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        modelBuilder.Entity<CrmElementEntity>(entity =>
-        {
-            entity.ToTable("crm_elements"); 
-            entity.HasKey(x => x.Id);
         });
 
         base.OnModelCreating(modelBuilder);
