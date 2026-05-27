@@ -19,27 +19,27 @@ public class CrmConstructorHub : Hub
         _elementRepository = elementRepository;
     }
 
-    public async Task AddOrUpdateStateAsync(string elementId, string json, CancellationToken cancellationToken)
+    public async Task AddOrUpdateStateAsync(string elementId, string json)
     {
         var elementGuid = Guid.Parse(elementId);
         _stateManager.AddOrUpdateState(elementGuid, json);
-        await Clients.Others.SendAsync("ReceiveNewState", elementId, json, cancellationToken);
+        await Clients.Others.SendAsync("ReceiveNewState", elementId, json);
     }
 
-    public async Task DeleteElementAsync(string elementId, CancellationToken cancellationToken)
+    public async Task DeleteElementAsync(string elementId)
     {
         var elementGuid = Guid.Parse(elementId);
         _stateManager.Remove(elementGuid);
-        await Clients.Others.SendAsync("DeleteElement", elementId, cancellationToken);
+        await Clients.Others.SendAsync("DeleteElement", elementId);
     }
 
-    public async Task DeleteAllAsync(CancellationToken cancellationToken)
+    public async Task DeleteAllAsync()
     {
         _stateManager.RemoveAll();
-        await Clients.Others.SendAsync("DeleteAll", cancellationToken);
+        await Clients.Others.SendAsync("DeleteAll");
     }
 
-    public async Task SaveElementPositionAsync(string elementId, string projectId, CancellationToken cancellationToken)
+    public async Task SaveElementPositionAsync(string elementId, string projectId)
     {
         var elementGuid = Guid.Parse(elementId);
         var projectGuid = Guid.Parse(projectId);
