@@ -19,15 +19,17 @@ public class CrmConstructorHub : Hub
         _elementRepository = elementRepository;
     }
 
-    public async Task AddOrUpdateStateAsync(Guid elementId, string json, CancellationToken cancellationToken)
+    public async Task AddOrUpdateStateAsync(string elementId, string json, CancellationToken cancellationToken)
     {
+        var elementGuid = Guid.Parse(elementId);
         _stateManager.AddOrUpdateState(elementId, json);
         await Clients.Others.SendAsync("ReceiveNewState", elementId, json, cancellationToken);
     }
 
-    public async Task DeleteElementAsync(Guid elementId, CancellationToken cancellationToken)
+    public async Task DeleteElementAsync(string elementId, CancellationToken cancellationToken)
     {
-        _stateManager.Remove(elementId);
+        var elementGuid = Guid.Parse(elementId);
+        _stateManager.Remove(elementGuid);
         await Clients.Others.SendAsync("DeleteElement", elementId, cancellationToken);
     }
 
@@ -37,8 +39,10 @@ public class CrmConstructorHub : Hub
         await Clients.Others.SendAsync("DeleteAll", cancellationToken);
     }
 
-    public async Task SaveElementPositionAsync(Guid elementId, CancellationToken cancellationToken)
+    public async Task SaveElementPositionAsync(string elementId, string projectId, CancellationToken cancellationToken)
     {
+        var elementGuid = Guid.Parse(elementId);
+        var projectGuid = Guid.Parse(projectId);
         var finalJson = _stateManager.GetElementState(elementId);
 
         if (finalJson != null)
@@ -57,7 +61,8 @@ public class CrmConstructorHub : Hub
             {
                 element = new CrmElementEntity
                 {
-                    Id = elementId,
+                    Id = elementGuid,
+                    ProjectId = projectGuid,
                     Json = finalJson,
                     LastModified = DateTime.UtcNow
                 };
