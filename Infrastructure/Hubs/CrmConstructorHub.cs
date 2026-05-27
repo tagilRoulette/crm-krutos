@@ -9,18 +9,24 @@ public class CrmConstructorHub : Hub
 {
     private readonly LayoutStateManager _stateManager;
     private readonly ICrmElementRepository _elementRepository;
+    private readonly ILogger<CrmConstructorHub> _logger;
 
     public CrmConstructorHub(
         LayoutStateManager stateManager,
         ICrmElementRepository elementRepository,
-        IProjectsRepository projectRepository)
+        IProjectsRepository projectRepository,
+        ILogger<CrmConstructorHub> logger)
     {
         _stateManager = stateManager;
         _elementRepository = elementRepository;
+        _logger = logger;
     }
 
     public async Task AddOrUpdateStateAsync(string elementId, string json)
     {
+        _logger.LogInformation(elementId);
+        _logger.LogInformation(json);
+
         var elementGuid = Guid.Parse(elementId);
         _stateManager.AddOrUpdateState(elementGuid, json);
         await Clients.Others.SendAsync("ReceiveNewState", elementId, json);
