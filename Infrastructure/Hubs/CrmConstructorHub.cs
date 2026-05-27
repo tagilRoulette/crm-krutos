@@ -22,7 +22,7 @@ public class CrmConstructorHub : Hub
     public async Task AddOrUpdateStateAsync(string elementId, string json, CancellationToken cancellationToken)
     {
         var elementGuid = Guid.Parse(elementId);
-        _stateManager.AddOrUpdateState(elementId, json);
+        _stateManager.AddOrUpdateState(elementGuid, json);
         await Clients.Others.SendAsync("ReceiveNewState", elementId, json, cancellationToken);
     }
 
@@ -43,11 +43,11 @@ public class CrmConstructorHub : Hub
     {
         var elementGuid = Guid.Parse(elementId);
         var projectGuid = Guid.Parse(projectId);
-        var finalJson = _stateManager.GetElementState(elementId);
+        var finalJson = _stateManager.GetElementState(elementGuid);
 
         if (finalJson != null)
         {
-            var element = await _elementRepository.GetByIdAsync(elementId, Context.ConnectionAborted);
+            var element = await _elementRepository.GetByIdAsync(elementGuid, Context.ConnectionAborted);
 
             if (element != null)
             {
