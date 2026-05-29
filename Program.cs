@@ -7,7 +7,12 @@ using Crm.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
+
+
 
 builder.Services.AddDal(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddLogic();
