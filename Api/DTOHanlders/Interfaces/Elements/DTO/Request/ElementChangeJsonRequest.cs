@@ -3,5 +3,5 @@
 public record ElementChangeJsonRequest
 {
     public Guid Id { get; set; }
-    public string Json { get; set; }
+    public string? Json { get; set; }
 }

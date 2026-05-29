@@ -24,6 +24,7 @@ public class CrmConstructorHub : Hub
 
     public async Task AddOrUpdateStateAsync(string elementId, string json)
     {
+
         _logger.LogInformation(elementId);
         _logger.LogInformation(json);
 
@@ -47,6 +48,7 @@ public class CrmConstructorHub : Hub
 
     public async Task SaveElementPositionAsync(string elementId, string projectId)
     {
+        _logger.LogInformation("Saving element position");
         var elementGuid = Guid.Parse(elementId);
         var projectGuid = Guid.Parse(projectId);
         var finalJson = _stateManager.GetElementState(elementGuid);

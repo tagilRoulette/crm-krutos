@@ -6,6 +6,6 @@ public class CrmElementEntity
     public string? Json { get; set; }
     public DateTime LastModified { get; set; }
 
-    public Guid ProjectId { get; set; }
-    public ProjectEntity Project { get; set; }
+    public Guid? ProjectId { get; set; }
+    public ProjectEntity? Project { get; set; }
 }
