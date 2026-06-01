@@ -12,7 +12,7 @@ public class ProjectsDbContext : DbContext
     {
         modelBuilder.Entity<ProjectEntity>(entity =>
         {
-            entity.ToTable("projects");
+            //entity.ToTable("projects");
 
             entity.HasKey(x => x.Id);
 

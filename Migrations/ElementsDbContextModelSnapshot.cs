@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crm.Migrations
 {
-    [DbContext(typeof(ProjectsDbContext))]
-    partial class ProjectsDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ElementsDbContext))]
+    partial class ElementsDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -29,10 +29,13 @@ namespace Crm.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Json")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("json");
 
                     b.Property<DateTime>("LastModified")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_modified");
 
                     b.Property<Guid>("PageId")
                         .HasColumnType("uuid");
@@ -41,7 +44,7 @@ namespace Crm.Migrations
 
                     b.HasIndex("PageId");
 
-                    b.ToTable("ElementEntity");
+                    b.ToTable("crm_elements", (string)null);
                 });
 
             modelBuilder.Entity("Crm.Data.Entities.ProjectEntity", b =>
@@ -51,22 +54,18 @@ namespace Crm.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("name");
+                        .HasColumnType("text");
 
                     b.Property<int>("NavigationType")
-                        .HasColumnType("integer")
-                        .HasColumnName("navigation_type");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("ProjectEntity");
                 });
 
             modelBuilder.Entity("Data.Entities.PageEntity", b =>

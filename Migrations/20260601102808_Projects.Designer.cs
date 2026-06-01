@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Crm.Migrations
 {
     [DbContext(typeof(ProjectsDbContext))]
-    [Migration("20260523161342_UpdatedProjectsDbModel")]
-    partial class UpdatedProjectsDbModel
+    [Migration("20260601102808_Projects")]
+    partial class Projects
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,10 @@ namespace Crm.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Crm.Data.Entities.CrmElementEntity", b =>
+            modelBuilder.Entity("Crm.Data.Entities.ElementEntity", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Json")
@@ -36,17 +37,14 @@ namespace Crm.Migrations
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("ProjectEntityId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ProjectId")
+                    b.Property<Guid>("PageId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectEntityId");
+                    b.HasIndex("PageId");
 
-                    b.ToTable("CrmElementEntity");
+                    b.ToTable("ElementEntity");
                 });
 
             modelBuilder.Entity("Crm.Data.Entities.ProjectEntity", b =>
@@ -71,23 +69,60 @@ namespace Crm.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("projects", (string)null);
+                    b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Crm.Data.Entities.CrmElementEntity", b =>
+            modelBuilder.Entity("Data.Entities.PageEntity", b =>
                 {
-                    b.HasOne("Crm.Data.Entities.ProjectEntity", null)
-                        .WithMany()
-                        .HasForeignKey("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("PageEntity");
+                });
+
+            modelBuilder.Entity("Crm.Data.Entities.ElementEntity", b =>
+                {
+                    b.HasOne("Data.Entities.PageEntity", "Page")
+                        .WithMany("Elements")
+                        .HasForeignKey("PageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Crm.Data.Entities.ProjectEntity", null)
-                        .WithMany("Elements")
-                        .HasForeignKey("ProjectEntityId");
+                    b.Navigation("Page");
+                });
+
+            modelBuilder.Entity("Data.Entities.PageEntity", b =>
+                {
+                    b.HasOne("Crm.Data.Entities.ProjectEntity", "Project")
+                        .WithMany("Pages")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Crm.Data.Entities.ProjectEntity", b =>
+                {
+                    b.Navigation("Pages");
+                });
+
+            modelBuilder.Entity("Data.Entities.PageEntity", b =>
                 {
                     b.Navigation("Elements");
                 });

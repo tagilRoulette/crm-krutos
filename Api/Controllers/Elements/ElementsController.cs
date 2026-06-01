@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Crm.Api.Controllers.Elements;
 
 [ApiController]
-[Route("/api/elements")]
+[Route("api/elements")]
 public class ElementsController : Controller
 {
     private readonly IElementsDTOHandler _DTOhandler;
@@ -44,7 +44,6 @@ public class ElementsController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult<ProjectResponse>> CreateElementAsync(
         [FromBody] ElementCreateRequest request,
         CancellationToken cancellationToken)

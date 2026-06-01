@@ -13,7 +13,7 @@ public class PagesDbContext : DbContext
     {
         modelBuilder.Entity<PageEntity>(entity =>
         {
-            entity.ToTable("pages");
+            //entity.ToTable("pages");
 
             entity.HasKey(x => x.Id);
 

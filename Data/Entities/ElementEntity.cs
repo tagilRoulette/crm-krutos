@@ -2,7 +2,7 @@ using Data.Entities;
 
 namespace Crm.Data.Entities;
 
-public class CrmElementEntity
+public class ElementEntity
 {
     public Guid Id { get; set; }
     public string? Json { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Crm.Data.Entities;
 using Crm.Logic;
+using Data.Entities;
 
 namespace Crm.Data.Repositories.Interfaces;
 
@@ -12,7 +13,6 @@ public interface IProjectsRepository
         string projectName,
         NavigationType navigationType,
         DateTime CreatedAt,
-        List<CrmElementEntity> LayoutJson,
         CancellationToken cancellationToken);
     public Task ChangeProjectNameAsync(Guid id, string newName, CancellationToken cancellationToken);
     public Task DeleteProjectAsync(Guid id, CancellationToken cancellationToken);

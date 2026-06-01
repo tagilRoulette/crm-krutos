@@ -6,13 +6,13 @@ namespace Crm.Data.Contexts;
 public class ElementsDbContext : DbContext
 {
     public ElementsDbContext(DbContextOptions<ElementsDbContext> options) : base(options) { }
-    public DbSet<CrmElementEntity> Elements => Set<CrmElementEntity>();
+    public DbSet<ElementEntity> Elements => Set<ElementEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<CrmElementEntity>(entity =>
+        modelBuilder.Entity<ElementEntity>(entity =>
         {
-            entity.ToTable("crm_elements");
+            //entity.ToTable("crm_elements");
 
             entity.HasKey(x => x.Id);
 

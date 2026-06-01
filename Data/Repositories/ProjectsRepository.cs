@@ -28,7 +28,6 @@ public class ProjectsRepository : IProjectsRepository
         string projectName,
         NavigationType navigationType,
         DateTime createdAt,
-        List<CrmElementEntity> layoutJson,
         CancellationToken cancellationToken)
     {
         ProjectEntity project = new()
@@ -36,10 +35,10 @@ public class ProjectsRepository : IProjectsRepository
             Id = id,
             Name = projectName,
             CreatedAt = createdAt,
-            Elements = layoutJson,
             NavigationType = navigationType
         };
         await _context.Projects.AddAsync(project, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
         return project;
     }
 

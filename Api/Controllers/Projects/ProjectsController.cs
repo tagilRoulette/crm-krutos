@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Crm.Api.Controllers.Projects;
 
 [ApiController]
-[Route("/api/projects")]
+[Route("api/projects")]
 public class ProjectsController : Controller
 {
     private readonly IProjectDTOHandler _DTOhandler;
@@ -34,12 +34,11 @@ public class ProjectsController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult<ProjectResponse>> CreateProjectAsync(
         [FromBody] ProjectCreateRequest request,
         CancellationToken cancellationToken)
     {
-        var project = await _DTOhandler.CreateProjectAsync(request.Name, cancellationToken);
+        var project = await _DTOhandler.CreateProjectAsync(request.Name, request.NavigationType, cancellationToken);
         return Ok(project);
     }
 

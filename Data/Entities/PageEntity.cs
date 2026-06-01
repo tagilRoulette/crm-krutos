@@ -11,5 +11,5 @@ public class PageEntity
     public Guid ProjectId { get; set; }
     public ProjectEntity Project { get; set; } = null!;
 
-    public ICollection<CrmElementEntity> Elements { get; set; } = new List<CrmElementEntity>();
+    public ICollection<ElementEntity> Elements { get; set; } = new List<ElementEntity>();
 }
