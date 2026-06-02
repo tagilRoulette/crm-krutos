@@ -66,7 +66,6 @@ public class ProjectsController : Controller
 
     [HttpDelete]
     public async Task<IActionResult> DeleteAllProjectsAsync(
-        [FromRoute] Guid id,
         CancellationToken cancellationToken
         )
     {

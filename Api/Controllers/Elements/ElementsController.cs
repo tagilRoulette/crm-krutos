@@ -34,17 +34,17 @@ public class ElementsController : Controller
         return Ok(element);
     }
 
-    [HttpGet("/by-project-id/{projectId:guid}")]
-    public async Task<ActionResult<ElementResponse>> GetElementsByProjectId(
-        [FromRoute] Guid projectId,
+    [HttpGet("/by-page-id/{pageId:guid}")]
+    public async Task<ActionResult<ElementResponse>> GetElementsByPageId(
+        [FromRoute] Guid pageId,
         CancellationToken cancellationToken)
     {
-        var element = await _DTOhandler.GetElementsByProjectIdAsync(projectId, cancellationToken);
-        return Ok(element);
+        var page = await _DTOhandler.GetElementsByPageIdAsync(pageId, cancellationToken);
+        return Ok(page);
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProjectResponse>> CreateElementAsync(
+    public async Task<ActionResult<ElementResponse>> CreateElementAsync(
         [FromBody] ElementCreateRequest request,
         CancellationToken cancellationToken)
     {
