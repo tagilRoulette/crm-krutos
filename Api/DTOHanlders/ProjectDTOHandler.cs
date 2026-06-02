@@ -35,10 +35,15 @@ public class ProjectDTOHandler : IProjectDTOHandler
             project.CreatedAt);
     }
 
-    // TODO
-    public Task<ProjectResponse> CreateTemplateProjectAsync(CancellationToken cancellationToken)
+    public  Task<ProjectResponse> CreateTemplateProjectAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var project = await _projectsService.CreateTemplateProjectAsync(cancellationToken);
+
+        return new ProjectResponse(
+            project.Id,
+            project.Name,
+            project.NavigationType,
+            project.CreatedAt);
     }
 
     public async Task DeleteAllProjectsAsync(CancellationToken cancellationToken)

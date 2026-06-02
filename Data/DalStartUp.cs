@@ -18,6 +18,4 @@ public static class DalStartUp
 
         services.AddScoped<IElementsRepository, ElementsRepository>();
         services.AddScoped<IProjectsRepository, ProjectsRepository>();
-        services.AddScoped<IPagesRepository, PagesRepository>();
-    }
 }
