@@ -11,9 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crm.Migrations
 {
-    [DbContext(typeof(PagesDbContext))]
-    [Migration("20260601102845_Pages")]
-    partial class Pages
+    [DbContext(typeof(ElementsDbContext))]
+    [Migration("20260602101350_Elements")]
+    partial class Elements
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,7 @@ namespace Crm.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Json")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModified")
@@ -75,13 +76,11 @@ namespace Crm.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("ProjectId")
                         .HasColumnType("uuid");
@@ -90,7 +89,7 @@ namespace Crm.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Pages");
+                    b.ToTable("PageEntity");
                 });
 
             modelBuilder.Entity("Crm.Data.Entities.ElementEntity", b =>

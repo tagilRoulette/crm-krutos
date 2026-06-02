@@ -6,22 +6,18 @@ namespace Crm.Data.Contexts;
 public class ElementsDbContext : DbContext
 {
     public ElementsDbContext(DbContextOptions<ElementsDbContext> options) : base(options) { }
-    public DbSet<ElementEntity> Elements => Set<ElementEntity>();
+    public DbSet<ElementEntity> ElementEntity => Set<ElementEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ElementEntity>(entity =>
         {
-            //entity.ToTable("crm_elements");
-
             entity.HasKey(x => x.Id);
 
             entity.Property(x => x.Json)
-            .HasColumnName("json")
             .IsRequired();
 
             entity.Property(x => x.LastModified)
-                .HasColumnName("last_modified")
                 .IsRequired();
 
             entity.HasOne(x => x.Page)

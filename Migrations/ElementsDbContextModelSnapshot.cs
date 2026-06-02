@@ -30,12 +30,10 @@ namespace Crm.Migrations
 
                     b.Property<string>("Json")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("json");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("LastModified")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_modified");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PageId")
                         .HasColumnType("uuid");
@@ -44,7 +42,7 @@ namespace Crm.Migrations
 
                     b.HasIndex("PageId");
 
-                    b.ToTable("crm_elements", (string)null);
+                    b.ToTable("ElementEntity");
                 });
 
             modelBuilder.Entity("Crm.Data.Entities.ProjectEntity", b =>

@@ -51,22 +51,19 @@ namespace Crm.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("created_at");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
-                        .HasColumnName("name");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<int>("NavigationType")
-                        .HasColumnType("integer")
-                        .HasColumnName("navigation_type");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("ProjectEntity");
                 });
 
             modelBuilder.Entity("Data.Entities.PageEntity", b =>

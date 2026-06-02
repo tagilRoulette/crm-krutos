@@ -46,19 +46,19 @@ namespace Crm.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "crm_elements",
+                name: "ElementEntity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    json = table.Column<string>(type: "text", nullable: false),
-                    last_modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Json = table.Column<string>(type: "text", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     PageId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_crm_elements", x => x.Id);
+                    table.PrimaryKey("PK_ElementEntity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_crm_elements_PageEntity_PageId",
+                        name: "FK_ElementEntity_PageEntity_PageId",
                         column: x => x.PageId,
                         principalTable: "PageEntity",
                         principalColumn: "Id",
@@ -66,8 +66,8 @@ namespace Crm.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_crm_elements_PageId",
-                table: "crm_elements",
+                name: "IX_ElementEntity_PageId",
+                table: "ElementEntity",
                 column: "PageId");
 
             migrationBuilder.CreateIndex(
@@ -80,7 +80,7 @@ namespace Crm.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "crm_elements");
+                name: "ElementEntity");
 
             migrationBuilder.DropTable(
                 name: "PageEntity");

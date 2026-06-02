@@ -11,9 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crm.Migrations
 {
-    [DbContext(typeof(ElementsDbContext))]
-    [Migration("20260601102824_Elements")]
-    partial class Elements
+    [DbContext(typeof(ProjectsDbContext))]
+    [Migration("20260602101409_Projects")]
+    partial class Projects
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,13 +32,10 @@ namespace Crm.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Json")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("json");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("LastModified")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("last_modified");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("PageId")
                         .HasColumnType("uuid");
@@ -47,7 +44,7 @@ namespace Crm.Migrations
 
                     b.HasIndex("PageId");
 
-                    b.ToTable("crm_elements", (string)null);
+                    b.ToTable("ElementEntity");
                 });
 
             modelBuilder.Entity("Crm.Data.Entities.ProjectEntity", b =>
@@ -61,7 +58,8 @@ namespace Crm.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<int>("NavigationType")
                         .HasColumnType("integer");

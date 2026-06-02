@@ -17,29 +17,29 @@ public class ElementsRepository : IElementsRepository
 
     public async Task<ElementEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Elements.FindAsync([id], cancellationToken);
+        return await _context.ElementEntity.FindAsync([id], cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<ElementEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _context.Elements.ToListAsync(cancellationToken);
+        return await _context.ElementEntity.ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<ElementEntity>> GetByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
     {
-        return await _context.Elements
+        return await _context.ElementEntity
             .Where(e => ids.Contains(e.Id))
             .ToListAsync(cancellationToken);
     }
 
     public async Task AddAsync(ElementEntity element, CancellationToken cancellationToken)
     {
-        await _context.Elements.AddAsync(element, cancellationToken);
+        await _context.ElementEntity.AddAsync(element, cancellationToken);
     }
 
     public void Update(ElementEntity element)
     {
-        _context.Elements.Update(element);
+        _context.ElementEntity.Update(element);
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
@@ -47,14 +47,14 @@ public class ElementsRepository : IElementsRepository
         var element = await GetByIdAsync(id, cancellationToken);
         if (element != null)
         {
-            _context.Elements.Remove(element);
+            _context.ElementEntity.Remove(element);
         }
     }
 
     public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
 
-        await _context.Elements.ExecuteDeleteAsync(cancellationToken);
+        await _context.ElementEntity.ExecuteDeleteAsync(cancellationToken);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ public class ElementsRepository : IElementsRepository
 
     public async Task<IReadOnlyCollection<ElementEntity>> GetByPageIdAsync(Guid pageId, CancellationToken cancellationToken)
     {
-        return await _context.Elements
+        return await _context.ElementEntity
             .Where(z => z.PageId == pageId)
             .ToListAsync(cancellationToken);
     }

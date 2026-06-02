@@ -17,10 +17,10 @@ public class ProjectsRepository : IProjectsRepository
 
     public async Task ChangeProjectNameAsync(Guid id, string newName, CancellationToken cancellationToken)
     {
-        var project = await _context.Projects.FindAsync(id, cancellationToken);
+        var project = await _context.ProjectEntity.FindAsync(id, cancellationToken);
         if (project is null) throw new KeyNotFoundException($"Project by id {id} not found.");
         project.Name = newName;
-        _context.Projects.Update(project);
+        _context.ProjectEntity.Update(project);
     }
 
     public async Task<ProjectEntity> CreateProjectAsync(
@@ -37,14 +37,14 @@ public class ProjectsRepository : IProjectsRepository
             CreatedAt = createdAt,
             NavigationType = navigationType
         };
-        await _context.Projects.AddAsync(project, cancellationToken);
+        await _context.ProjectEntity.AddAsync(project, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         return project;
     }
 
     public async Task DeleteAllProjectsAsync(CancellationToken cancellationToken)
     {
-        await _context.Projects.ExecuteDeleteAsync(cancellationToken);
+        await _context.ProjectEntity.ExecuteDeleteAsync(cancellationToken);
     }
 
     public async Task DeleteProjectAsync(Guid id, CancellationToken cancellationToken)
@@ -52,18 +52,18 @@ public class ProjectsRepository : IProjectsRepository
         var project = await GetProjectByIdAsync(id, cancellationToken);
         if (project != null)
         {
-            _context.Projects.Remove(project);
+            _context.ProjectEntity.Remove(project);
         }
     }
 
     public async Task<IReadOnlyCollection<ProjectEntity>> GetAllProjectsAsync(CancellationToken cancellationToken)
     {
-        return await _context.Projects.ToListAsync();
+        return await _context.ProjectEntity.ToListAsync();
     }
 
     public async Task<ProjectEntity> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Projects.FindAsync(id, cancellationToken)
+        return await _context.ProjectEntity.FindAsync(id, cancellationToken)
             ?? throw new KeyNotFoundException($"Project by id {id} not found.");
     }
 

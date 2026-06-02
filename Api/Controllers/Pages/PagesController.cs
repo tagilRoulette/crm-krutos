@@ -33,7 +33,7 @@ public class PagesController : Controller
         return Ok(page);
     }
 
-    [HttpGet("/by-project-id/{projectId:guid}")]
+    [HttpGet("by-project-id/{projectId:guid}")]
     public async Task<ActionResult<PageListResponse>> GetPagesByProjectId(
     [FromRoute] Guid projectId,
     CancellationToken cancellationToken)

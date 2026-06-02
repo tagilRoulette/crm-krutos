@@ -34,7 +34,7 @@ public class ElementsController : Controller
         return Ok(element);
     }
 
-    [HttpGet("/by-page-id/{pageId:guid}")]
+    [HttpGet("by-page-id/{pageId:guid}")]
     public async Task<ActionResult<ElementResponse>> GetElementsByPageId(
         [FromRoute] Guid pageId,
         CancellationToken cancellationToken)

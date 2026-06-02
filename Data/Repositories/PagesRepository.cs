@@ -23,13 +23,13 @@ public class PagesRepository : IPagesRepository
             ProjectId = projectId,
             CreatedAt = createdAt,
         };
-        await _context.Pages.AddAsync(page, cancellationToken);
+        await _context.PageEntity.AddAsync(page, cancellationToken);
         return page;
     }
 
     public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
-        await _context.Pages.ExecuteDeleteAsync(cancellationToken);
+        await _context.PageEntity.ExecuteDeleteAsync(cancellationToken);
     }
 
     public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -37,27 +37,27 @@ public class PagesRepository : IPagesRepository
         var page = await GetByIdAsync(id, cancellationToken);
         if (page is not null)
         {
-            _context.Pages.Remove(page);
+            _context.PageEntity.Remove(page);
         }
     }
 
     public async Task<IReadOnlyCollection<PageEntity>> GetAllAsync(CancellationToken cancellationToken)
     {
-        return await _context.Pages
+        return await _context.PageEntity
             .Include(z => z.Elements)
             .ToListAsync(cancellationToken);
     }
 
     public async Task<PageEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await _context.Pages
+        return await _context.PageEntity
             .Include(z => z.Elements)
             .FirstOrDefaultAsync(z => z.Id == id, cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<PageEntity>> GetByProjectIdAsync(Guid projectId, CancellationToken cancellationToken)
     {
-        return await _context.Pages
+        return await _context.PageEntity
             .Where(z => z.ProjectId == projectId)
             .Include(z => z.Elements)
             .ToListAsync(cancellationToken);
