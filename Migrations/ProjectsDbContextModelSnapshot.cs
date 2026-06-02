@@ -34,14 +34,24 @@ namespace Crm.Migrations
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
+<<<<<<< Updated upstream
                     b.Property<Guid>("PageId")
+=======
+                    b.Property<Guid?>("ProjectId")
+>>>>>>> Stashed changes
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
+<<<<<<< Updated upstream
                     b.HasIndex("PageId");
 
                     b.ToTable("ElementEntity");
+=======
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("crm_elements", (string)null);
+>>>>>>> Stashed changes
                 });
 
             modelBuilder.Entity("Crm.Data.Entities.ProjectEntity", b =>
@@ -68,6 +78,7 @@ namespace Crm.Migrations
 
             modelBuilder.Entity("Data.Entities.PageEntity", b =>
                 {
+<<<<<<< Updated upstream
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
@@ -107,6 +118,12 @@ namespace Crm.Migrations
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+=======
+                    b.HasOne("Crm.Data.Entities.ProjectEntity", "Project")
+                        .WithMany("Elements")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
+>>>>>>> Stashed changes
 
                     b.Navigation("Project");
                 });

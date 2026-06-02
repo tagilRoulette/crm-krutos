@@ -30,28 +30,36 @@ public class PagesDTOHandler : IPagesDTOHandler
         return new([.. models.Select(z => new PageResponse(z.Id, z.Name, z.CreatedAt, z.ProjectId))]);
     }
 
-    public Task DeleteAllAsync(CancellationToken cancellationToken)
+    public async Task DeleteAllAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _pagesService.DeleteAllAsync(cancellationToken);
     }
 
-    public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await _pagesService.DeleteByIdAsync(id, cancellationToken);
     }
 
-    public Task<PageListResponse> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<PageListResponse> GetAllAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var models = await _pagesService.GetAllAsync(cancellationToken);
+        return new([.. models.Select(z => new PageResponse(z.Id, z.Name, z.CreatedAt, z.ProjectId))]);
     }
 
-    public Task<PageResponse> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<PageResponse> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
-    }
+        var model = await _pagesService.GetByIdAsync(id, cancellationToken);
+        return new PageResponse(model.Id, model.Name, model.CreatedAt, model.ProjectId);
+    }                                               
+   
 
-    public Task<PageListResponse?> GetByProjectIdAsync(Guid projectId, CancellationToken cancellationToken)
+    public async Task<PageListResponse?> GetByProjectIdAsync(Guid projectId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var models = await _pagesService.GetByProjectIdAsync(projectId, cancellationToken);
+        if (models == null)
+        {
+            return null;
+        }
+        return new([.. models.Select(z => new PageResponse(z.Id, z.Name, z.CreatedAt, z.ProjectId))]);
     }
 }
