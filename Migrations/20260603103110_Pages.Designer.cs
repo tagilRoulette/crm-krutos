@@ -11,9 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crm.Migrations
 {
-    [DbContext(typeof(ProjectsDbContext))]
-    [Migration("20260602101409_Projects")]
-    partial class Projects
+    [DbContext(typeof(PagesDbContext))]
+    [Migration("20260603103110_Pages")]
+    partial class Pages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,8 +58,7 @@ namespace Crm.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
                     b.Property<int>("NavigationType")
                         .HasColumnType("integer");

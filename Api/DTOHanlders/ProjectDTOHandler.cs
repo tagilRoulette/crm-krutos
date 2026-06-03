@@ -35,7 +35,7 @@ public class ProjectDTOHandler : IProjectDTOHandler
             project.CreatedAt);
     }
 
-    public  Task<ProjectResponse> CreateTemplateProjectAsync(CancellationToken cancellationToken)
+    public async Task<ProjectResponse> CreateTemplateProjectAsync(CancellationToken cancellationToken)
     {
         var project = await _projectsService.CreateTemplateProjectAsync(cancellationToken);
 
