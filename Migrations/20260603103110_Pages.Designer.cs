@@ -3,6 +3,7 @@ using System;
 using Crm.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,10 +11,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crm.Migrations
 {
-    [DbContext(typeof(ProjectsDbContext))]
-    partial class ProjectsDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PagesDbContext))]
+    [Migration("20260603103110_Pages")]
+    partial class Pages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -55,8 +58,7 @@ namespace Crm.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
                     b.Property<int>("NavigationType")
                         .HasColumnType("integer");

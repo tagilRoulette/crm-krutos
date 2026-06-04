@@ -1,6 +1,6 @@
-using Crm.Data.Entities;
 using Crm.Data.Repositories.Interfaces;
 using Crm.Logic.Layout;
+using Crm.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Crm.Infrastructure.Hubs;
@@ -8,26 +8,19 @@ namespace Crm.Infrastructure.Hubs;
 public class CrmConstructorHub : Hub
 {
     private readonly LayoutStateManager _stateManager;
-    private readonly ICrmElementRepository _elementRepository;
-    private readonly ILogger<CrmConstructorHub> _logger;
+    private readonly IElementsService _elementsService;
 
     public CrmConstructorHub(
         LayoutStateManager stateManager,
-        ICrmElementRepository elementRepository,
-        IProjectsRepository projectRepository,
-        ILogger<CrmConstructorHub> logger)
+        IElementsService elementService)
     {
         _stateManager = stateManager;
-        _elementRepository = elementRepository;
-        _logger = logger;
+        _elementsService = elementService;
     }
 
+    #region Elements
     public async Task AddOrUpdateStateAsync(string elementId, string json)
     {
-
-        _logger.LogInformation(elementId);
-        _logger.LogInformation(json);
-
         var elementGuid = Guid.Parse(elementId);
         _stateManager.AddOrUpdateState(elementGuid, json);
         await Clients.Others.SendAsync("ReceiveNewState", elementId, json);
@@ -40,43 +33,49 @@ public class CrmConstructorHub : Hub
         await Clients.Others.SendAsync("DeleteElement", elementId);
     }
 
-    public async Task DeleteAllAsync()
+    public async Task DeleteAllElementsAsync()
     {
         _stateManager.RemoveAll();
-        await Clients.Others.SendAsync("DeleteAll");
+        await Clients.Others.SendAsync("DeleteAllElements");
+    }
+    #endregion
+
+    #region Pages
+    public async Task CreatePageAsync(string pageId, string name)
+    {
+        await Clients.Others.SendAsync("CreatePage", pageId, name);
     }
 
-    public async Task SaveElementPositionAsync(string elementId, string projectId)
+    public async Task RenamePageAsync(string pageId, string newName)
     {
-        _logger.LogInformation("Saving element position");
-        var elementGuid = Guid.Parse(elementId);
-        var projectGuid = Guid.Parse(projectId);
-        var finalJson = _stateManager.GetElementState(elementGuid);
+        await Clients.Others.SendAsync("RenamePage", pageId, newName);
+    }
 
-        if (finalJson != null)
+    public async Task DeletePageAsync(string pageId)
+    {
+        await Clients.Others.SendAsync("DeletePage", pageId);
+    }
+
+    public async Task DeleteAllPages()
+    {
+        await Clients.Others.SendAsync("DeleteAllPages");
+    }
+    #endregion
+
+    public async Task SaveElementPositionAsync(string elementId, string pageId, string jsonState)
+    {
+        if (!Guid.TryParse(elementId, out var parsedElementId) ||
+            !Guid.TryParse(pageId, out var parsedPageId))
         {
-            var element = await _elementRepository.GetByIdAsync(elementGuid, Context.ConnectionAborted);
-
-            if (element != null)
-            {
-
-                element.Json = finalJson;
-                element.LastModified = DateTime.UtcNow;
-
-                _elementRepository.Update(element);
-            }
-            else
-            {
-                element = new CrmElementEntity
-                {
-                    Id = elementGuid,
-                    ProjectId = projectGuid,
-                    Json = finalJson,
-                    LastModified = DateTime.UtcNow
-                };
-                await _elementRepository.AddAsync(element, Context.ConnectionAborted);
-            }
-            await _elementRepository.SaveChangesAsync(Context.ConnectionAborted);
+            throw new FormatException("Unrecognized Guid format. Expected standard UUID.");
         }
+
+        // TODO
+        // Сохраняем в БД через сервис элементов
+        //var json = _stateManager.GetElementState(parsedElementId);
+        await _elementsService.SaveOrUpdateElementAsync(parsedElementId, parsedPageId, jsonState, Context.ConnectionAborted);
+
+        // Рассылаем всем остальным подключенным клиентам, минуя групповую синхронизацию
+        await Clients.Others.SendAsync("ElementPositionUpdated", elementId, pageId, jsonState);
     }
 }

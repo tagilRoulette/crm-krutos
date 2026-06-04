@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crm.Migrations
 {
-    [DbContext(typeof(ProjectsDbContext))]
-    partial class ProjectsDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ElementsDbContext))]
+    partial class ElementsDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -29,6 +29,7 @@ namespace Crm.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Json")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("LastModified")
@@ -55,8 +56,7 @@ namespace Crm.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                        .HasColumnType("text");
 
                     b.Property<int>("NavigationType")
                         .HasColumnType("integer");

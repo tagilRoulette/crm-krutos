@@ -1,9 +1,8 @@
+using Crm.Api;
 using Crm.Data;
 using Crm.Infrastructure.Hubs;
 using Crm.Logic;
-using Crm.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
-using Crm.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +13,13 @@ builder.Services.AddSignalR(options =>
 
 
 
+builder.Services.AddControllers();
 builder.Services.AddDal(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddLogic();
 builder.Services.AddApi();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
@@ -32,19 +34,33 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    var elementsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ElementsDbContext>>();
-    using (var elementsContext = elementsDbFactory.CreateDbContext())
-    {
-        elementsContext.Database.Migrate();
-    }
-    var projectsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ProjectsDbContext>>();
-    using (var projectsContext = projectsDbFactory.CreateDbContext())
-    {
-        projectsContext.Database.Migrate();
-    }
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.MapControllers();
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var elementsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ElementsDbContext>>();
+//    using (var elementsContext = elementsDbFactory.CreateDbContext())
+//    {
+//        elementsContext.Database.Migrate();
+//    }
+//    var projectsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ProjectsDbContext>>();
+//    using (var projectsContext = projectsDbFactory.CreateDbContext())
+//    {
+//        projectsContext.Database.Migrate();
+//    }
+//    var pagesDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<PagesDbContext>>();
+//    using (var pagesContext = projectsDbFactory.CreateDbContext())
+//    {
+//        pagesContext.Database.Migrate();
+//    }
+//}
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();

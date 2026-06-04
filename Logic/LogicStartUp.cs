@@ -12,7 +12,9 @@ public static class LogicStartUp
     {
         services.AddSingleton<LayoutStateManager>();
         services.AddSingleton<EmbeddedFileProvider>(new EmbeddedFileProvider(Assembly.GetExecutingAssembly()));
+
         services.AddScoped<IElementsService, ElementsService>();
         services.AddScoped<IProjectsService, ProjectsService>();
+        services.AddScoped<IPagesService, PagesService>();
     }
 }

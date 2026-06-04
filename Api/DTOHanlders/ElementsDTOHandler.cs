@@ -27,9 +27,9 @@ public class ElementsDTOHandler : IElementsDTOHandler
         return new ElementListResponse(responses);
     }
 
-    public async Task<ElementListResponse> GetElementsByProjectIdAsync(Guid projectId, CancellationToken cancellationToken)
+    public async Task<ElementListResponse> GetElementsByPageIdAsync(Guid projectId, CancellationToken cancellationToken)
     {
-        var models = await _elementsService.GetElementsByProjectIdAsync(projectId, cancellationToken);
+        var models = await _elementsService.GetElementsByPageIdAsync(projectId, cancellationToken);
 
         var responses = models.Select(MapToResponse).ToList();
         return new ElementListResponse(responses);

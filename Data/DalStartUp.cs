@@ -13,8 +13,11 @@ public static class DalStartUp
             options.UseNpgsql(connectionString));
         services.AddDbContextFactory<ProjectsDbContext>(options =>
             options.UseNpgsql(connectionString));
+        services.AddDbContextFactory<PagesDbContext>(options =>
+            options.UseNpgsql(connectionString));
 
-        services.AddScoped<ICrmElementRepository, CrmElementRepository>();
+        services.AddScoped<IElementsRepository, ElementsRepository>();
         services.AddScoped<IProjectsRepository, ProjectsRepository>();
+        services.AddScoped<IPagesRepository, PagesRepository>();
     }
 }

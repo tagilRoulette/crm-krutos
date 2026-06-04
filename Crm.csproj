@@ -8,20 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Data\Templates\TemplateProject.json" />
+    <Content Remove="Data\Templates\elements_template.json" />
+    <Content Remove="Data\Templates\pages_template.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
+  
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Data\Templates\TemplateProject.json" />
+    <Resource Include="Data\Templates\elements_template.json" />
+    <Resource Include="Data\Templates\pages_template.json" />
   </ItemGroup>
 
 </Project>

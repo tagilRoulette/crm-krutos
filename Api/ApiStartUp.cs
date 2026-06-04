@@ -13,5 +13,6 @@ public static class ApiStartUp
     {
         services.AddScoped<IProjectDTOHandler, ProjectDTOHandler>();
         services.AddScoped<IElementsDTOHandler, ElementsDTOHandler>();
+        services.AddScoped<IPagesDTOHandler, PagesDTOHandler>();
     }
 }
