@@ -60,7 +60,7 @@ public class ElementsService : IElementsService
 
         await _hub.Clients.All.SendAsync("ReceiveNewState", entity.Id, entity.Json, cancellationToken);
 
-        return new ElementModel(entity.PageId, entity.Json, entity.LastModified, entity.PageId);
+        return new ElementModel(entity.Id, entity.Json, entity.LastModified, entity.PageId);
     }
 
     public async Task ChangeElementAsync(Guid id, string json, CancellationToken cancellationToken)

@@ -72,6 +72,7 @@ public class CrmConstructorHub : Hub
 
         // TODO
         // Сохраняем в БД через сервис элементов
+        //var json = _stateManager.GetElementState(parsedElementId);
         await _elementsService.SaveOrUpdateElementAsync(parsedElementId, parsedPageId, jsonState, Context.ConnectionAborted);
 
         // Рассылаем всем остальным подключенным клиентам, минуя групповую синхронизацию
