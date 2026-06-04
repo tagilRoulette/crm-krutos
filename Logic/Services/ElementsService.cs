@@ -124,4 +124,26 @@ public class ElementsService : IElementsService
 
         return [.. entities.Select(z => new ElementModel(z.Id, z.Json, z.LastModified, z.PageId))];
     }
+
+    public async Task SaveOrUpdateElementAsync(Guid elementId, Guid pageId, string jsonState, CancellationToken cancellationToken)
+    {
+        var element = await _elementsRepository.GetByIdAsync(elementId, cancellationToken);
+        if (element is null)
+        {
+            ElementEntity entity = new()
+            {
+                Id = elementId,
+                Json = jsonState,
+                PageId = pageId,
+                LastModified = DateTime.UtcNow
+            };
+            await _elementsRepository.AddAsync(entity, cancellationToken);
+        }
+        else
+        {
+            element.Json = jsonState;
+            _elementsRepository.Update(element);
+        }
+        await _elementsRepository.SaveChangesAsync(cancellationToken);
+    }
 }

@@ -1,5 +1,4 @@
 using Crm.Data.Entities;
-using Data.Entities;
 
 namespace Crm.Data.Repositories.Interfaces;
 

@@ -1,7 +1,6 @@
-using Crm.Data.Entities;
 using Crm.Data.Repositories.Interfaces;
 using Crm.Logic.Layout;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Crm.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Crm.Infrastructure.Hubs;
@@ -9,25 +8,19 @@ namespace Crm.Infrastructure.Hubs;
 public class CrmConstructorHub : Hub
 {
     private readonly LayoutStateManager _stateManager;
-    private readonly IElementsRepository _elementRepository;
-    private readonly ILogger<CrmConstructorHub> _logger;
+    private readonly IElementsService _elementsService;
 
     public CrmConstructorHub(
         LayoutStateManager stateManager,
-        IElementsRepository elementRepository,
-        ILogger<CrmConstructorHub> logger)
+        IElementsService elementService)
     {
         _stateManager = stateManager;
-        _elementRepository = elementRepository;
-        _logger = logger;
+        _elementsService = elementService;
     }
 
     #region Elements
     public async Task AddOrUpdateStateAsync(string elementId, string json)
     {
-        _logger.LogInformation(elementId);
-        _logger.LogInformation(json);
-
         var elementGuid = Guid.Parse(elementId);
         _stateManager.AddOrUpdateState(elementGuid, json);
         await Clients.Others.SendAsync("ReceiveNewState", elementId, json);
@@ -48,9 +41,9 @@ public class CrmConstructorHub : Hub
     #endregion
 
     #region Pages
-    public async Task CreatePageAsync(string pageId)
+    public async Task CreatePageAsync(string pageId, string name)
     {
-        await Clients.Others.SendAsync("CreatePage", pageId);
+        await Clients.Others.SendAsync("CreatePage", pageId, name);
     }
 
     public async Task RenamePageAsync(string pageId, string newName)
@@ -79,7 +72,7 @@ public class CrmConstructorHub : Hub
 
         // TODO
         // Сохраняем в БД через сервис элементов
-        //await _elementsService.SaveOrUpdateElementAsync(parsedElementId, parsedPageId, jsonState);
+        await _elementsService.SaveOrUpdateElementAsync(parsedElementId, parsedPageId, jsonState, Context.ConnectionAborted);
 
         // Рассылаем всем остальным подключенным клиентам, минуя групповую синхронизацию
         await Clients.Others.SendAsync("ElementPositionUpdated", elementId, pageId, jsonState);

@@ -12,5 +12,6 @@ namespace Crm.Logic.Services.Interfaces
         public Task ChangeElementAsync(Guid id, string json, CancellationToken cancellationToken);
         public Task<bool> DeleteElementAsync(Guid id, CancellationToken cancellationToken);
         public Task DeleteAllElementsAsync(CancellationToken cancellationToken);
+        Task SaveOrUpdateElementAsync(Guid elementId, Guid pageId, string jsonState, CancellationToken cancellationToken);
     }
 }
