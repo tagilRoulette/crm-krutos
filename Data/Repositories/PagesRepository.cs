@@ -1,4 +1,4 @@
-﻿using Crm.Data.Contexts;
+using Crm.Data.Contexts;
 using Crm.Data.Repositories.Interfaces;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -71,7 +71,7 @@ public class PagesRepository : IPagesRepository
     public async Task ChangeNameAsync(Guid pageId, string newName, CancellationToken cancellationToken)
     {
         var page = await _context.FindAsync<PageEntity>([pageId], cancellationToken)
-            ?? throw new Exception($"Page entity by id {pageId} is not found.");
+            ?? throw new KeyNotFoundException($"Page entity by id {pageId} is not found.");
         page.Name = newName;
         _context.Update(page);
     }

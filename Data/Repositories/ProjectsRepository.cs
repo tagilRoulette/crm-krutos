@@ -1,4 +1,4 @@
-﻿using Crm.Data.Contexts;
+using Crm.Data.Contexts;
 using Crm.Data.Entities;
 using Crm.Data.Repositories.Interfaces;
 using Crm.Logic;
@@ -67,9 +67,11 @@ public class ProjectsRepository : IProjectsRepository
             ?? throw new KeyNotFoundException($"Project by id {id} not found.");
     }
 
-    public Task<ProjectEntity> GetProjectTemplateAsync(CancellationToken cancellationToken)
+    public async Task<ProjectEntity> GetProjectTemplateAsync(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        return await _context.ProjectEntity
+            .FirstOrDefaultAsync(p => p.Name == "Template project", cancellationToken)
+            ?? throw new KeyNotFoundException("Template project not found.");
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)

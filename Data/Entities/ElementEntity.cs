@@ -9,5 +9,5 @@ public class ElementEntity
     public DateTime LastModified { get; set; }
 
     public Guid PageId { get; set; }
-    public PageEntity Page { get; set; }
+    public PageEntity Page { get; set; } = null!;
 }

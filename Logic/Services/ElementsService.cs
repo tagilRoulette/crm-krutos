@@ -25,7 +25,7 @@ public class ElementsService : IElementsService
         var entity = await _elementsRepository.GetByIdAsync(id, cancellationToken);
 
         if (entity == null)
-            throw new Exception($"Entity with ID {id} is not found.");
+            throw new KeyNotFoundException($"Entity with ID {id} is not found.");
 
         return new(entity.Id, entity.Json, entity.LastModified, entity.PageId);
     }

@@ -36,7 +36,7 @@ public class LayoutStateManager
 
     public string? GetElementState(Guid objectId)
     {
-        _positions.TryGetValue(objectId, out string state);
+        _positions.TryGetValue(objectId, out string? state);
         return state;
     }
 }

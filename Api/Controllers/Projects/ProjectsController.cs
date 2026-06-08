@@ -1,4 +1,4 @@
-﻿using Crm.Api.Controllers.Elements.DTO.Request;
+using Crm.Api.Controllers.Elements.DTO.Request;
 using Crm.Api.Controllers.Projects.DTO.Request;
 using Crm.Api.Controllers.Projects.DTO.Response;
 using Crm.Api.DTOHanlders.Interfaces;
@@ -29,8 +29,15 @@ public class ProjectsController : Controller
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var project = await _DTOhandler.GetProjectByIdAsync(id, cancellationToken);
-        return Ok(project);
+        try
+        {
+            var project = await _DTOhandler.GetProjectByIdAsync(id, cancellationToken);
+            return Ok(project);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpPost]
@@ -49,8 +56,15 @@ public class ProjectsController : Controller
         CancellationToken cancellationToken
         )
     {
-        await _DTOhandler.ChangeProjectNameAsync(id, request.Json, cancellationToken);
-        return NoContent();
+        try
+        {
+            await _DTOhandler.ChangeProjectNameAsync(id, request.Json, cancellationToken);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpDelete("{id:guid}")]
@@ -59,9 +73,16 @@ public class ProjectsController : Controller
         CancellationToken cancellationToken
         )
     {
-        var isDeletedSuccessfully = await _DTOhandler.DeleteProjectAsync(id, cancellationToken);
-        if (isDeletedSuccessfully) return NoContent();
-        return NotFound();
+        try
+        {
+            var isDeletedSuccessfully = await _DTOhandler.DeleteProjectAsync(id, cancellationToken);
+            if (isDeletedSuccessfully) return NoContent();
+            return NotFound();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpDelete]

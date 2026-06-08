@@ -1,4 +1,4 @@
-﻿using Crm.Data.Repositories.Interfaces;
+using Crm.Data.Repositories.Interfaces;
 using Crm.Infrastructure.Hubs;
 using Crm.Logic.Models;
 using Crm.Logic.Services.Interfaces;
@@ -29,7 +29,7 @@ namespace Crm.Logic.Services
                 cancellationToken);
             await _pagesRepo.SaveChangesAsync(cancellationToken);
 
-            await _hub.Clients.All.SendAsync("CreatePage", pageId.ToString(), cancellationToken);
+            await _hub.Clients.All.SendAsync("CreatePage", pageId.ToString(), name, cancellationToken);
 
             return new(
                 page.Id,
@@ -55,7 +55,7 @@ namespace Crm.Logic.Services
             foreach (var e in entities)
             {
                 await _pagesRepo.CreateAsync(e.Id, e.ProjectId, e.Name, e.CreatedAt, cancellationToken);
-                await _hub.Clients.All.SendAsync("CreatePage", e.Id, cancellationToken);
+                await _hub.Clients.All.SendAsync("CreatePage", e.Id.ToString(), e.Name, cancellationToken);
             }
             await _pagesRepo.SaveChangesAsync(cancellationToken);
 
@@ -85,7 +85,7 @@ namespace Crm.Logic.Services
         public async Task<PageModel> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var page = await _pagesRepo.GetByIdAsync(id, cancellationToken)
-                ?? throw new Exception($"Page with ID {id} is not found.");
+                ?? throw new KeyNotFoundException($"Page with ID {id} is not found.");
 
             return new(page.Id, page.Name, page.CreatedAt, page.ProjectId);
         }

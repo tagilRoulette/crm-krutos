@@ -1,4 +1,4 @@
-﻿using Crm.Api.Controllers.Pages.DTO.Request;
+using Crm.Api.Controllers.Pages.DTO.Request;
 using Crm.Api.Controllers.Pages.DTO.Response;
 using Crm.Api.DTOHanlders.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -29,8 +29,15 @@ public class PagesController : Controller
     [FromRoute] Guid id,
     CancellationToken cancellationToken)
     {
-        var page = await _DTOhandler.GetByIdAsync(id, cancellationToken);
-        return Ok(page);
+        try
+        {
+            var page = await _DTOhandler.GetByIdAsync(id, cancellationToken);
+            return Ok(page);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet("by-project-id/{projectId:guid}")]
@@ -58,8 +65,15 @@ public class PagesController : Controller
     CancellationToken cancellationToken
     )
     {
-        await _DTOhandler.ChangeNameAsync(id, request.Name, cancellationToken);
-        return NoContent();
+        try
+        {
+            await _DTOhandler.ChangeNameAsync(id, request.Name, cancellationToken);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpDelete("{id:guid}")]

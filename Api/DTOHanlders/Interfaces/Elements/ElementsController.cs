@@ -1,4 +1,4 @@
-﻿using Crm.Api.Controllers.Elements.DTO.Request;
+using Crm.Api.Controllers.Elements.DTO.Request;
 using Crm.Api.Controllers.Elements.DTO.Response;
 using Crm.Api.Controllers.Projects.DTO.Response;
 using Crm.Api.DTOHanlders.Interfaces;
@@ -30,8 +30,15 @@ public class ElementsController : Controller
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var element = await _DTOhandler.GetElementByIdAsync(id, cancellationToken);
-        return Ok(element);
+        try
+        {
+            var element = await _DTOhandler.GetElementByIdAsync(id, cancellationToken);
+            return Ok(element);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 
     [HttpGet("by-page-id/{pageId:guid}")]

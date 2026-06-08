@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+using System.Xml.Linq;
 using Crm.Data.Repositories.Interfaces;
 using Crm.Infrastructure;
 using Crm.Logic.Models;
@@ -86,13 +86,13 @@ public class ProjectsService : IProjectsService
     {
         var projects = await _projectsRepository.GetAllProjectsAsync(cancellationToken);
         return [..projects
-            .Select(p => new ProjectModel(p.Id, p.Name, p.NavigationType, p.CreatedAt))
+            .Select(p => new ProjectModel(p.Id, p.Name ?? string.Empty, p.NavigationType, p.CreatedAt))
             ];
     }
 
     public async Task<ProjectModel> GetProjectByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var project = await _projectsRepository.GetProjectByIdAsync(id, cancellationToken);
-        return new(project.Id, project.Name, project.NavigationType, project.CreatedAt);
+        return new(project.Id, project.Name ?? string.Empty, project.NavigationType, project.CreatedAt);
     }
 }
