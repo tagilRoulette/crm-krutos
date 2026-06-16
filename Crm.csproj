@@ -8,27 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Новая папка1\**" />
-    <Compile Remove="Новая папка\**" />
-    <Content Remove="Новая папка1\**" />
-    <Content Remove="Новая папка\**" />
-    <EmbeddedResource Remove="Новая папка1\**" />
-    <EmbeddedResource Remove="Новая папка\**" />
-    <None Remove="Новая папка1\**" />
-    <None Remove="Новая папка\**" />
+    <Content Remove="Data\Templates\elements_template.json" />
+    <Content Remove="Data\Templates\pages_template.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.3" />
+  
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Api\" />
+    <Resource Include="Data\Templates\elements_template.json" />
+    <Resource Include="Data\Templates\pages_template.json" />
   </ItemGroup>
 
 </Project>

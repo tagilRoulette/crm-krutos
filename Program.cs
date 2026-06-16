@@ -1,31 +1,25 @@
-using Microsoft.AspNetCore.Builder;
+using Crm.Api;
+using Crm.Data;
+using Crm.Infrastructure.Hubs;
+using Crm.Logic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-builder.Services.AddSignalR();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-=======
-=======
->>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
-builder.Services.AddSingleton<LayoutStateManager>();
-
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 
 
-builder.Services.AddDbContextFactory<AppDbContext>(options =>
-<<<<<<< HEAD
->>>>>>> 3e3e200 (Drag & drop WIP.)
-=======
->>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllers();
+builder.Services.AddDal(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddLogic();
+builder.Services.AddApi();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
@@ -38,14 +32,35 @@ builder.Services.AddCors(options =>
     });
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 3e3e200 (Drag & drop WIP.)
-=======
->>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.MapControllers();
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var elementsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ElementsDbContext>>();
+//    using (var elementsContext = elementsDbFactory.CreateDbContext())
+//    {
+//        elementsContext.Database.Migrate();
+//    }
+//    var projectsDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ProjectsDbContext>>();
+//    using (var projectsContext = projectsDbFactory.CreateDbContext())
+//    {
+//        projectsContext.Database.Migrate();
+//    }
+//    var pagesDbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<PagesDbContext>>();
+//    using (var pagesContext = projectsDbFactory.CreateDbContext())
+//    {
+//        pagesContext.Database.Migrate();
+//    }
+//}
 app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -53,15 +68,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseCors();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-app.MapHub<CrmConstructorHub>("/constructorHub");
-=======
 app.MapHub<CrmConstructorHub>("/crmConstructorHub");
->>>>>>> 3e3e200 (Drag & drop WIP.)
-=======
-app.MapHub<CrmConstructorHub>("/crmConstructorHub");
->>>>>>> 3e3e20054a93f0369771e5a8ddd4c109efb1b5d2
 
 app.MapFallbackToFile("index.html");
 
